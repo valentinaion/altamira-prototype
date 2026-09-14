@@ -1,0 +1,181 @@
+════════════════════════════════════════════════════════════════════════════════
+  ALTAMIRA PROTOTYPE - COPY & PASTE DEPLOYMENT COMMANDS
+════════════════════════════════════════════════════════════════════════════════
+
+YOUR GITHUB INFO:
+  Username: valentinaion
+  Repository: altamira-prototype
+  Live URL: https://valentinaion.github.io/altamira-prototype/standalone.html
+
+════════════════════════════════════════════════════════════════════════════════
+
+STEP 1: CREATE REPOSITORY (3 min)
+─────────────────────────────────────────────────────────────────────────────
+
+Open your browser and go to: https://github.com/new
+
+Fill in:
+  Repository name: altamira-prototype
+  Description: Altamira Regenerative Finance Interactive Dashboard
+  Visibility: ★ PUBLIC (required!)
+
+Options:
+  ☐ DO NOT initialize with README
+  ☐ DO NOT add .gitignore
+  ☐ DO NOT add license
+
+Click: "Create repository"
+
+⏸️  STOP HERE - Wait for GitHub to show empty repo
+
+════════════════════════════════════════════════════════════════════════════════
+
+STEP 2: PUSH CODE (1 min)
+─────────────────────────────────────────────────────────────────────────────
+
+Copy and paste ALL 4 commands below into your terminal:
+
+────────────────────────────────────────────────────────────────────────────
+
+cd /home/vaion/altamira-prototype
+
+────────────────────────────────────────────────────────────────────────────
+
+git remote add origin https://github.com/valentinaion/altamira-prototype.git
+
+────────────────────────────────────────────────────────────────────────────
+
+git branch -m master main
+
+────────────────────────────────────────────────────────────────────────────
+
+git push -u origin main
+
+────────────────────────────────────────────────────────────────────────────
+
+WHEN PROMPTED FOR PASSWORD:
+  Username: valentinaion
+  Password: [GitHub Personal Access Token - see below]
+
+HOW TO GET GITHUB TOKEN:
+  1. Go to: https://github.com/settings/tokens
+  2. Click: "Generate new token (classic)"
+  3. Set Expiration: 90 days (or longer)
+  4. Check: ✓ repo (full control of private repositories)
+  5. Click: "Generate token"
+  6. Copy the token (you'll only see it once!)
+  7. Use that token as your password when git asks
+
+✅ You'll see: "25 files changed, 4568 insertions" (or similar)
+
+════════════════════════════════════════════════════════════════════════════════
+
+STEP 3: ENABLE GITHUB PAGES (2 min)
+─────────────────────────────────────────────────────────────────────────────
+
+1. Go to your repo:
+   https://github.com/valentinaion/altamira-prototype
+
+2. Click: Settings (top right)
+
+3. Left sidebar → Pages
+
+4. Under "Build and deployment":
+   Source: Select "Deploy from a branch"
+   Branch: Select "main"
+   Folder: Select "/(root)"
+
+5. Click: Save
+
+6. Wait 1-2 minutes (GitHub is building)
+
+7. You'll see a green message: "Your site is live at..."
+
+════════════════════════════════════════════════════════════════════════════════
+
+STEP 4: VERIFY & SHARE (1 min)
+─────────────────────────────────────────────────────────────────────────────
+
+Open your browser:
+  https://valentinaion.github.io/altamira-prototype/standalone.html
+
+✅ You should see:
+  • Dashboard with 3 tabs (Discover, Dashboard, Tracking)
+  • 10 Colombian regenerative projects
+  • Orange "DEMO DATA" warning banner
+  • Professional Fluent UI styling
+
+If not visible:
+  • Wait 2-3 minutes (Pages sometimes takes longer)
+  • Refresh browser (Ctrl+F5)
+  • Check Settings > Pages to verify it's enabled
+
+════════════════════════════════════════════════════════════════════════════════
+
+STEP 5: SHARE WITH ALTAMIRA
+─────────────────────────────────────────────────────────────────────────────
+
+Send Altamira this URL:
+
+  https://valentinaion.github.io/altamira-prototype/standalone.html
+
+With message:
+  "Here's the interactive Altamira Regenerative Finance dashboard.
+   Features 10 Colombian regenerative projects with real-time filtering.
+   All data is synthetic for demo purposes. Click the tabs to explore."
+
+════════════════════════════════════════════════════════════════════════════════
+
+TROUBLESHOOTING
+─────────────────────────────────────────────────────────────────────────────
+
+"fatal: could not read Username"
+  → You need a GitHub personal access token
+  → Get one: https://github.com/settings/tokens
+  → Use it as your password (not your GitHub password)
+
+"Repository not found"
+  → Make sure you created the repo at https://github.com/new
+  → Make sure it's PUBLIC
+  → Wait a few seconds for GitHub to show it
+
+"GitHub Pages says 404 Not Found"
+  → Make sure you enabled Pages in Settings
+  → Make sure Branch is "main" and Folder is "/(root)"
+  → Wait 2-3 minutes for build to complete
+  → Refresh browser
+
+"Still can't see it after 5 minutes"
+  → Go to: https://github.com/valentinaion/altamira-prototype/settings/pages
+  → Check if there's an error message
+  → Make sure repo is PUBLIC (not private)
+
+════════════════════════════════════════════════════════════════════════════════
+
+AFTER GOING LIVE - FUTURE UPDATES
+─────────────────────────────────────────────────────────────────────────────
+
+To make changes and update your live site:
+
+  1. Edit files locally
+  2. Run: git add .
+  3. Run: git commit -m "Your message"
+  4. Run: git push
+  5. Site updates automatically in 1-2 minutes!
+
+════════════════════════════════════════════════════════════════════════════════
+
+QUESTIONS?
+─────────────────────────────────────────────────────────────────────────────
+
+See these files in your repository:
+  • GO_LIVE_NOW.md - Detailed step-by-step guide
+  • README_DEPLOYMENT.md - Quick summary
+  • DEPLOYMENT_CHECKLIST.md - Interactive checklist
+  • GITHUB_DEPLOYMENT.md - Full reference with all details
+
+════════════════════════════════════════════════════════════════════════════════
+
+YOU'RE READY! Follow the 5 steps above and your prototype will be live! 🚀
+
+════════════════════════════════════════════════════════════════════════════════
