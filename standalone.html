@@ -9,35 +9,398 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f5f5; color: #333; }
-        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
-        .header { background: white; padding: 20px; border-radius: 4px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        .header h1 { color: #0078d4; font-size: 28px; margin-bottom: 8px; }
-        .header p { color: #666; font-size: 14px; }
-        .fidelity { background: #fff4e6; border-left: 4px solid #ff9800; padding: 12px 16px; margin-bottom: 16px; border-radius: 2px; }
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 20px; }
-        .stat-card { background: white; padding: 16px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); text-align: center; }
-        .stat-value { font-size: 32px; font-weight: bold; color: #0078d4; margin: 8px 0; }
-        .stat-label { font-size: 12px; color: #666; text-transform: uppercase; }
-        .project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
-        .project-card { background: white; padding: 16px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.2s; }
-        .project-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); transform: translateY(-2px); }
-        .project-title { font-weight: 600; color: #0078d4; font-size: 14px; margin-bottom: 8px; }
-        .project-row { font-size: 12px; margin: 6px 0; display: flex; justify-content: space-between; }
-        .project-label { color: #666; font-weight: 500; }
-        .project-value { color: #333; }
-        .status-active { color: #107c10; }
-        .status-diligence { color: #ff8c00; }
-        table { width: 100%; border-collapse: collapse; background: white; border-radius: 4px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        th { background: #f0f0f0; padding: 12px; text-align: left; font-weight: 600; font-size: 12px; border-bottom: 1px solid #ddd; }
-        td { padding: 12px; border-bottom: 1px solid #eee; font-size: 13px; }
-        tr:hover { background: #f9f9f9; }
-        .tab-buttons { display: flex; gap: 8px; margin-bottom: 20px; }
-        .tab-btn { padding: 8px 16px; background: #f0f0f0; border: none; border-radius: 4px; cursor: pointer; font-weight: 500; transition: all 0.2s; }
-        .tab-btn.active { background: #0078d4; color: white; }
-        .tab-btn:hover { background: #005a9e; color: white; }
-        .chart { background: white; padding: 16px; border-radius: 4px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        .chart h3 { margin-bottom: 12px; font-size: 16px; color: #333; }
+        
+        body { 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            background: #f5f5f5; 
+            color: #333; 
+            line-height: 1.6;
+        }
+        
+        .container { 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            padding: 20px; 
+        }
+        
+        .header { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 4px; 
+            margin-bottom: 20px; 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
+        }
+        
+        .header h1 { 
+            color: #0078d4; 
+            font-size: 28px; 
+            margin-bottom: 8px; 
+        }
+        
+        .header p { 
+            color: #666; 
+            font-size: 14px; 
+        }
+        
+        .fidelity { 
+            background: #fff4e6; 
+            border-left: 4px solid #ff9800; 
+            padding: 12px 16px; 
+            margin-bottom: 16px; 
+            border-radius: 2px;
+            font-size: 13px;
+        }
+        
+        .fidelity strong {
+            color: #d84315;
+        }
+        
+        /* Filters Section */
+        .filters {
+            background: white;
+            padding: 16px;
+            border-radius: 4px;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: grid;
+            gap: 12px;
+        }
+        
+        .filter-grid {
+            display: grid;
+            gap: 12px;
+        }
+        
+        .filter-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .filter-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+        
+        .filter-group input,
+        .filter-group select {
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            background: white;
+        }
+        
+        .filter-group input:focus,
+        .filter-group select:focus {
+            outline: none;
+            border-color: #0078d4;
+            box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.1);
+        }
+        
+        /* Stats Grid */
+        .stats-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 12px; 
+            margin-bottom: 20px; 
+        }
+        
+        .stat-card { 
+            background: white; 
+            padding: 16px; 
+            border-radius: 4px; 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
+            text-align: center; 
+            border-left: 4px solid #0078d4;
+        }
+        
+        .stat-value { 
+            font-size: 32px; 
+            font-weight: bold; 
+            color: #0078d4; 
+            margin: 8px 0; 
+        }
+        
+        .stat-label { 
+            font-size: 12px; 
+            color: #666; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px;
+        }
+        
+        /* Projects Grid */
+        .project-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+            gap: 12px; 
+        }
+        
+        .project-card { 
+            background: white; 
+            padding: 16px; 
+            border-radius: 4px; 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
+            cursor: pointer; 
+            transition: all 0.2s; 
+            border-left: 4px solid #0078d4;
+        }
+        
+        .project-card:hover { 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
+            transform: translateY(-2px); 
+        }
+        
+        .project-title { 
+            font-weight: 600; 
+            color: #0078d4; 
+            font-size: 14px; 
+            margin-bottom: 8px; 
+        }
+        
+        .project-row { 
+            font-size: 12px; 
+            margin: 6px 0; 
+            display: flex; 
+            justify-content: space-between; 
+        }
+        
+        .project-label { 
+            color: #666; 
+            font-weight: 500; 
+        }
+        
+        .project-value { 
+            color: #333; 
+            font-weight: 500;
+        }
+        
+        .status-active { 
+            color: #107c10; 
+            background: #c6efce;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        
+        .status-diligence { 
+            color: #d97706; 
+            background: #fef3c7;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        
+        .status-discovery {
+            color: #7c3aed;
+            background: #ede9fe;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        
+        /* Tables */
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            background: white; 
+            border-radius: 4px; 
+            overflow: hidden; 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
+        }
+        
+        th { 
+            background: #f0f0f0; 
+            padding: 12px; 
+            text-align: left; 
+            font-weight: 600; 
+            font-size: 12px; 
+            border-bottom: 1px solid #ddd; 
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        td { 
+            padding: 12px; 
+            border-bottom: 1px solid #eee; 
+            font-size: 13px; 
+        }
+        
+        tr:hover { 
+            background: #f9f9f9; 
+        }
+        
+        .perf-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        
+        .perf-high {
+            background: #c6efce;
+            color: #107c10;
+        }
+        
+        .perf-medium {
+            background: #fef3c7;
+            color: #d97706;
+        }
+        
+        .perf-low {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+        
+        /* Tabs */
+        .tab-buttons { 
+            display: flex; 
+            gap: 8px; 
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn { 
+            padding: 10px 16px; 
+            background: #f0f0f0; 
+            border: none; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-weight: 500; 
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+        
+        .tab-btn.active { 
+            background: #0078d4; 
+            color: white; 
+        }
+        
+        .tab-btn:hover { 
+            background: #005a9e; 
+            color: white; 
+        }
+        
+        .tab-btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.3);
+        }
+        
+        .chart { 
+            background: white; 
+            padding: 16px; 
+            border-radius: 4px; 
+            margin-bottom: 20px; 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
+        }
+        
+        .chart h3 { 
+            margin-bottom: 12px; 
+            font-size: 16px; 
+            color: #333; 
+        }
+        
+        .results-info {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 16px;
+        }
+        
+        .results-info strong {
+            color: #0078d4;
+            font-weight: 600;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #666;
+            font-size: 12px;
+            border-top: 1px solid #ddd;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 12px;
+            }
+            
+            .header h1 {
+                font-size: 20px;
+            }
+            
+            .header p,
+            .header {
+                font-size: 13px;
+                padding: 16px;
+            }
+            
+            .project-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .filter-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .tab-buttons {
+                flex-direction: column;
+            }
+            
+            .tab-btn {
+                width: 100%;
+            }
+            
+            table {
+                font-size: 12px;
+            }
+            
+            th, td {
+                padding: 8px;
+            }
+            
+            .stat-value {
+                font-size: 24px;
+            }
+            
+            .stat-card {
+                padding: 12px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 18px;
+            }
+            
+            table {
+                font-size: 11px;
+            }
+            
+            th, td {
+                padding: 6px;
+            }
+            
+            .stat-value {
+                font-size: 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -45,33 +408,51 @@
     
     <script type="text/babel">
         const projects = [
-            { id: 'CO-ANT-001', name: 'Cauca Valley Agroforestry', dept: 'Antioquia', type: 'Agroforestry', stage: 'Active', investment: 450000, carbon: 890, biodiversity: 78, water: 72, livelihoods: 81 },
-            { id: 'CO-ANT-002', name: 'Medellín Metro Restoration', dept: 'Antioquia', type: 'Watershed', stage: 'Diligence', investment: 680000, carbon: 520, biodiversity: 65, water: 68, livelihoods: 58 },
-            { id: 'CO-VDC-001', name: 'Regenerative Cattle Systems', dept: 'Valle del Cauca', type: 'Cattle', stage: 'Active', investment: 520000, carbon: 1240, biodiversity: 72, water: 75, livelihoods: 79 },
-            { id: 'CO-VDC-002', name: 'Mangrove Restoration – Buenaventura', dept: 'Valle del Cauca', type: 'Mangrove', stage: 'Discovery', investment: 750000, carbon: 2100, biodiversity: 84, water: 81, livelihoods: 62 },
-            { id: 'CO-CUN-001', name: 'Bogotá Savanna Biodiversity', dept: 'Cundinamarca', type: 'Watershed', stage: 'Diligence', investment: 420000, carbon: 380, biodiversity: 88, water: 71, livelihoods: 52 },
+            { id: 'CO-ANT-001', name: 'Cauca Valley Agroforestry', dept: 'Antioquia', type: 'Agroforestry', stage: 'Active', investment: 450000, carbon: 890, biodiversity: 78, water: 72, livelihoods: 75 },
+            { id: 'CO-ANT-002', name: 'Medellín Metro Restoration', dept: 'Antioquia', type: 'Watershed', stage: 'Diligence', investment: 680000, carbon: 520, biodiversity: 65, water: 68, livelihoods: 62 },
+            { id: 'CO-VDC-001', name: 'Regenerative Cattle Systems', dept: 'Valle del Cauca', type: 'Cattle', stage: 'Active', investment: 520000, carbon: 1240, biodiversity: 72, water: 75, livelihoods: 81 },
+            { id: 'CO-VDC-002', name: 'Mangrove Restoration – Buenaventura', dept: 'Valle del Cauca', type: 'Mangrove', stage: 'Discovery', investment: 750000, carbon: 2100, biodiversity: 84, water: 88, livelihoods: 74 },
+            { id: 'CO-CUN-001', name: 'Bogotá Savanna Biodiversity', dept: 'Cundinamarca', type: 'Watershed', stage: 'Diligence', investment: 420000, carbon: 380, biodiversity: 88, water: 71, livelihoods: 68 },
             { id: 'CO-CUN-002', name: 'High-Altitude Coffee Regen', dept: 'Cundinamarca', type: 'Coffee', stage: 'Active', investment: 380000, carbon: 650, biodiversity: 76, water: 79, livelihoods: 84 },
             { id: 'CO-META-001', name: 'Llanos Grassland Restoration', dept: 'Meta', type: 'Cattle', stage: 'Discovery', investment: 890000, carbon: 3200, biodiversity: 68, water: 65, livelihoods: 71 },
-            { id: 'CO-META-002', name: 'Orinoco Tributary Reforestation', dept: 'Meta', type: 'Watershed', stage: 'Active', investment: 620000, carbon: 1650, biodiversity: 79, water: 74, livelihoods: 65 },
-            { id: 'CO-BOL-001', name: 'Caribbean Mangrove Protection', dept: 'Bolívar', type: 'Mangrove', stage: 'Diligence', investment: 850000, carbon: 2650, biodiversity: 87, water: 83, livelihoods: 75 },
+            { id: 'CO-META-002', name: 'Orinoco Tributary Reforestation', dept: 'Meta', type: 'Watershed', stage: 'Active', investment: 620000, carbon: 1650, biodiversity: 79, water: 74, livelihoods: 77 },
+            { id: 'CO-BOL-001', name: 'Caribbean Mangrove Protection', dept: 'Bolívar', type: 'Mangrove', stage: 'Diligence', investment: 850000, carbon: 2650, biodiversity: 87, water: 83, livelihoods: 79 },
             { id: 'CO-BOL-002', name: 'Cartagena Urban Forest', dept: 'Bolívar', type: 'Watershed', stage: 'Active', investment: 310000, carbon: 220, biodiversity: 61, water: 64, livelihoods: 68 },
         ];
+        
+        const departments = ['Antioquia', 'Valle del Cauca', 'Cundinamarca', 'Meta', 'Bolívar'];
+        const projectTypes = ['Agroforestry', 'Cattle', 'Coffee', 'Mangrove', 'Watershed'];
+        const stages = ['Discovery', 'Diligence', 'Active'];
 
         function App() {
             const [tab, setTab] = React.useState('discover');
-            const [filter, setFilter] = React.useState('');
+            const [search, setSearch] = React.useState('');
+            const [deptFilter, setDeptFilter] = React.useState('');
+            const [typeFilter, setTypeFilter] = React.useState('');
+            const [stageFilter, setStageFilter] = React.useState('');
 
-            const filtered = projects.filter(p => 
-                p.name.toLowerCase().includes(filter.toLowerCase()) ||
-                p.dept.toLowerCase().includes(filter.toLowerCase())
-            );
+            const filtered = projects.filter(p => {
+                const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase()) || 
+                                     p.dept.toLowerCase().includes(search.toLowerCase());
+                const matchesDept = !deptFilter || p.dept === deptFilter;
+                const matchesType = !typeFilter || p.type === typeFilter;
+                const matchesStage = !stageFilter || p.stage === stageFilter;
+                return matchesSearch && matchesDept && matchesType && matchesStage;
+            });
 
             const stats = {
                 total: filtered.length,
                 totalCarbon: filtered.reduce((s, p) => s + p.carbon, 0),
-                avgBio: Math.round(filtered.reduce((s, p) => s + p.biodiversity, 0) / filtered.length || 0),
+                avgBio: filtered.length > 0 ? Math.round(filtered.reduce((s, p) => s + p.biodiversity, 0) / filtered.length) : 0,
                 active: filtered.filter(p => p.stage === 'Active').length,
-                totalInvest: (filtered.reduce((s, p) => s + p.investment, 0) / 1000000).toFixed(1)
+                totalInvest: (filtered.reduce((s, p) => s + p.investment, 0) / 1000000).toFixed(1),
+                avgWater: filtered.length > 0 ? Math.round(filtered.reduce((s, p) => s + p.water, 0) / filtered.length) : 0
+            };
+            
+            const getPerformanceBadge = (value) => {
+                if (value >= 95) return 'perf-high';
+                if (value >= 85) return 'perf-medium';
+                return 'perf-low';
             };
 
             return (
@@ -81,60 +462,170 @@
                         <p>Discover, evaluate, and track regenerative projects in Colombia</p>
                     </div>
 
-                    <div className="fidelity">
-                        <strong>⚠️ DEMO DATA:</strong> All 10 projects, metrics, and data are 100% synthetic for demonstration only.
+                    <div className="fidelity" role="alert">
+                        <strong>⚠️ DEMO DATA:</strong> All 10 projects, metrics, and data are 100% synthetic for demonstration only. Not for investment decisions.
                     </div>
 
                     <div className="tab-buttons">
-                        <button className={`tab-btn ${tab === 'discover' ? 'active' : ''}`} onClick={() => setTab('discover')}>Discover Projects</button>
-                        <button className={`tab-btn ${tab === 'dashboard' ? 'active' : ''}`} onClick={() => setTab('dashboard')}>Dashboard</button>
-                        <button className={`tab-btn ${tab === 'tracking' ? 'active' : ''}`} onClick={() => setTab('tracking')}>Tracking</button>
+                        <button 
+                            className={`tab-btn ${tab === 'discover' ? 'active' : ''}`} 
+                            onClick={() => setTab('discover')}
+                            aria-label="Discover Projects tab"
+                        >
+                            Discover Projects
+                        </button>
+                        <button 
+                            className={`tab-btn ${tab === 'dashboard' ? 'active' : ''}`} 
+                            onClick={() => setTab('dashboard')}
+                            aria-label="Dashboard tab"
+                        >
+                            Dashboard
+                        </button>
+                        <button 
+                            className={`tab-btn ${tab === 'tracking' ? 'active' : ''}`} 
+                            onClick={() => setTab('tracking')}
+                            aria-label="Tracking tab"
+                        >
+                            Tracking
+                        </button>
                     </div>
 
                     {tab === 'discover' && (
                         <div>
-                            <div style={{marginBottom: '16px'}}>
-                                <input 
-                                    type="text" 
-                                    placeholder="Search projects..." 
-                                    value={filter}
-                                    onChange={e => setFilter(e.target.value)}
-                                    style={{width: '100%', padding: '10px', fontSize: '14px', borderRadius: '4px', border: '1px solid #ddd'}}
-                                />
-                            </div>
-                            <p style={{marginBottom: '12px'}}>Showing <strong>{filtered.length}</strong> of {projects.length} projects</p>
-                            <div className="project-grid">
-                                {filtered.map(p => (
-                                    <div key={p.id} className="project-card">
-                                        <div className="project-title">{p.name}</div>
-                                        <div className="project-row">
-                                            <span className="project-label">Dept:</span>
-                                            <span className="project-value">{p.dept}</span>
-                                        </div>
-                                        <div className="project-row">
-                                            <span className="project-label">Type:</span>
-                                            <span className="project-value">{p.type}</span>
-                                        </div>
-                                        <div className="project-row">
-                                            <span className="project-label">Stage:</span>
-                                            <span className={`project-value ${p.stage === 'Active' ? 'status-active' : 'status-diligence'}`}>{p.stage}</span>
-                                        </div>
-                                        <div className="project-row">
-                                            <span className="project-label">Carbon:</span>
-                                            <span className="project-value">{p.carbon} tCO2e/yr</span>
-                                        </div>
-                                        <div className="project-row">
-                                            <span className="project-label">Investment:</span>
-                                            <span className="project-value">${(p.investment/1000).toFixed(0)}K</span>
-                                        </div>
+                            <div className="filters">
+                                <div className="filter-row">
+                                    <div className="filter-group">
+                                        <label htmlFor="search-input">Search Project</label>
+                                        <input 
+                                            id="search-input"
+                                            type="text" 
+                                            placeholder="Search by name or department..." 
+                                            value={search}
+                                            onChange={e => setSearch(e.target.value)}
+                                            aria-label="Search projects by name or department"
+                                        />
                                     </div>
-                                ))}
+                                    <div className="filter-group">
+                                        <label htmlFor="dept-filter">Department</label>
+                                        <select 
+                                            id="dept-filter"
+                                            value={deptFilter}
+                                            onChange={e => setDeptFilter(e.target.value)}
+                                            aria-label="Filter by department"
+                                        >
+                                            <option value="">All Departments</option>
+                                            {departments.map(dept => (
+                                                <option key={dept} value={dept}>{dept}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    <div className="filter-group">
+                                        <label htmlFor="type-filter">Project Type</label>
+                                        <select 
+                                            id="type-filter"
+                                            value={typeFilter}
+                                            onChange={e => setTypeFilter(e.target.value)}
+                                            aria-label="Filter by project type"
+                                        >
+                                            <option value="">All Types</option>
+                                            {projectTypes.map(type => (
+                                                <option key={type} value={type}>{type}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div className="results-info">
+                                Showing <strong>{filtered.length}</strong> of {projects.length} projects
+                            </div>
+                            
+                            <div className="project-grid">
+                                {filtered.length > 0 ? (
+                                    filtered.map(p => (
+                                        <div key={p.id} className="project-card">
+                                            <div className="project-title">{p.name}</div>
+                                            <div className="project-row">
+                                                <span className="project-label">Department:</span>
+                                                <span className="project-value">{p.dept}</span>
+                                            </div>
+                                            <div className="project-row">
+                                                <span className="project-label">Type:</span>
+                                                <span className="project-value">{p.type}</span>
+                                            </div>
+                                            <div className="project-row">
+                                                <span className="project-label">Stage:</span>
+                                                <span className={`project-value status-${p.stage.toLowerCase()}`}>{p.stage}</span>
+                                            </div>
+                                            <div className="project-row">
+                                                <span className="project-label">Carbon:</span>
+                                                <span className="project-value">{p.carbon.toLocaleString()} tCO2e/yr</span>
+                                            </div>
+                                            <div className="project-row">
+                                                <span className="project-label">Biodiversity:</span>
+                                                <span className="project-value">{p.biodiversity}/100</span>
+                                            </div>
+                                            <div className="project-row">
+                                                <span className="project-label">Investment:</span>
+                                                <span className="project-value">${(p.investment/1000).toFixed(0)}K</span>
+                                            </div>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div style={{gridColumn: '1 / -1', padding: '40px 20px', textAlign: 'center', color: '#999'}}>
+                                        <p>No projects match your filters. Try adjusting your search criteria.</p>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     )}
 
                     {tab === 'dashboard' && (
                         <div>
+                            <div className="filters">
+                                <div className="filter-row">
+                                    <div className="filter-group">
+                                        <label htmlFor="dashboard-search">Search Project</label>
+                                        <input 
+                                            id="dashboard-search"
+                                            type="text" 
+                                            placeholder="Search by name or department..." 
+                                            value={search}
+                                            onChange={e => setSearch(e.target.value)}
+                                            aria-label="Search dashboard projects"
+                                        />
+                                    </div>
+                                    <div className="filter-group">
+                                        <label htmlFor="dashboard-dept">Department</label>
+                                        <select 
+                                            id="dashboard-dept"
+                                            value={deptFilter}
+                                            onChange={e => setDeptFilter(e.target.value)}
+                                            aria-label="Filter dashboard by department"
+                                        >
+                                            <option value="">All Departments</option>
+                                            {departments.map(dept => (
+                                                <option key={dept} value={dept}>{dept}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    <div className="filter-group">
+                                        <label htmlFor="dashboard-stage">Stage</label>
+                                        <select 
+                                            id="dashboard-stage"
+                                            value={stageFilter}
+                                            onChange={e => setStageFilter(e.target.value)}
+                                            aria-label="Filter dashboard by stage"
+                                        >
+                                            <option value="">All Stages</option>
+                                            {stages.map(stage => (
+                                                <option key={stage} value={stage}>{stage}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div className="stats-grid">
                                 <div className="stat-card">
                                     <div className="stat-label">Active Projects</div>
@@ -153,6 +644,14 @@
                                     <div className="stat-label">Avg Biodiversity</div>
                                     <div className="stat-value">{stats.avgBio}/100</div>
                                 </div>
+                                <div className="stat-card">
+                                    <div className="stat-label">Avg Water Quality</div>
+                                    <div className="stat-value">{stats.avgWater}/100</div>
+                                </div>
+                                <div className="stat-card">
+                                    <div className="stat-label">Projects Displayed</div>
+                                    <div className="stat-value">{stats.total}</div>
+                                </div>
                             </div>
 
                             <div className="chart">
@@ -160,15 +659,31 @@
                                 {(() => {
                                     const deptCounts = {};
                                     filtered.forEach(p => { deptCounts[p.dept] = (deptCounts[p.dept] || 0) + 1; });
-                                    return (
-                                        <table style={{width: '100%'}}>
-                                            <thead><tr><th>Department</th><th>Project Count</th></tr></thead>
+                                    return Object.entries(deptCounts).length > 0 ? (
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Department</th>
+                                                    <th>Project Count</th>
+                                                    <th>Avg Carbon (tCO2e/yr)</th>
+                                                </tr>
+                                            </thead>
                                             <tbody>
-                                                {Object.entries(deptCounts).map(([dept, count]) => (
-                                                    <tr key={dept}><td>{dept}</td><td>{count}</td></tr>
-                                                ))}
+                                                {Object.entries(deptCounts).map(([dept, count]) => {
+                                                    const deptProjects = filtered.filter(p => p.dept === dept);
+                                                    const avgCarbon = Math.round(deptProjects.reduce((s, p) => s + p.carbon, 0) / count);
+                                                    return (
+                                                        <tr key={dept}>
+                                                            <td>{dept}</td>
+                                                            <td>{count}</td>
+                                                            <td>{avgCarbon.toLocaleString()}</td>
+                                                        </tr>
+                                                    );
+                                                })}
                                             </tbody>
                                         </table>
+                                    ) : (
+                                        <p style={{color: '#999', textAlign: 'center', padding: '20px'}}>No data to display</p>
                                     );
                                 })()}
                             </div>
@@ -177,34 +692,61 @@
 
                     {tab === 'tracking' && (
                         <div>
-                            <h3 style={{marginBottom: '16px'}}>Active & Monitoring Projects</h3>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Project Name</th>
-                                        <th>Department</th>
-                                        <th>Carbon (tCO2e/yr)</th>
-                                        <th>Biodiversity</th>
-                                        <th>Investment</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {filtered.filter(p => p.stage === 'Active').map(p => (
-                                        <tr key={p.id}>
-                                            <td>{p.name}</td>
-                                            <td>{p.dept}</td>
-                                            <td>{p.carbon}</td>
-                                            <td>{p.biodiversity}/100</td>
-                                            <td>${(p.investment/1000).toFixed(0)}K</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                            <div className="filters">
+                                <h3 style={{marginBottom: '12px', fontSize: '14px', textTransform: 'uppercase', color: '#666', letterSpacing: '0.5px'}}>
+                                    Active & Monitoring Projects
+                                </h3>
+                            </div>
+                            
+                            <div className="chart">
+                                {(() => {
+                                    const activeProjects = filtered.filter(p => p.stage === 'Active');
+                                    return activeProjects.length > 0 ? (
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Project Name</th>
+                                                    <th>Department</th>
+                                                    <th>Carbon (tCO2e/yr)</th>
+                                                    <th>Biodiversity</th>
+                                                    <th>Water Quality</th>
+                                                    <th>Investment</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {activeProjects.map(p => (
+                                                    <tr key={p.id}>
+                                                        <td>{p.name}</td>
+                                                        <td>{p.dept}</td>
+                                                        <td>{p.carbon.toLocaleString()}</td>
+                                                        <td>
+                                                            <span className={`perf-badge ${getPerformanceBadge(p.biodiversity)}`}>
+                                                                {p.biodiversity}/100
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span className={`perf-badge ${getPerformanceBadge(p.water)}`}>
+                                                                {p.water}/100
+                                                            </span>
+                                                        </td>
+                                                        <td>${(p.investment/1000).toFixed(0)}K</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    ) : (
+                                        <p style={{color: '#999', textAlign: 'center', padding: '40px 20px'}}>
+                                            No active projects to display. Try adjusting your filters.
+                                        </p>
+                                    );
+                                })()}
+                            </div>
                         </div>
                     )}
 
-                    <div style={{textAlign: 'center', marginTop: '40px', padding: '20px', color: '#666', fontSize: '12px'}}>
-                        <p>✅ Prototype Status: Fully Functional | Tech: React + Fluent UI Design | Data: 100% Synthetic (Demo Only)</p>
+                    <div className="footer">
+                        <p>✅ Prototype Status: Fully Functional | Tech: React 18 + Fluent UI Design | Data: 100% Synthetic (Demo Only)</p>
+                        <p style={{marginTop: '8px', fontSize: '11px'}}>For questions or feedback, please contact the Altamira team.</p>
                     </div>
                 </div>
             );
