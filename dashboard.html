@@ -1,0 +1,1182 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ALTAMIRA | Colombia Regenerative Investment Studio</title>
+  <script>
+    (() => {
+      const param = new URLSearchParams(window.location.search).get("scoutTheme");
+      const theme =
+        param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+  <style>
+    :root {
+      color-scheme: light;
+      --cp-bg: #f7f4ef;
+      --cp-bg-elevated: #fcfbf8;
+      --cp-surface: #ffffff;
+      --cp-surface-soft: #f5f5f5;
+      --cp-border: #dedede;
+      --cp-border-strong: #919191;
+      --cp-text: #242424;
+      --cp-text-muted: #5c5c5c;
+      --cp-text-soft: #6f6f6f;
+      --cp-accent: #b11f4b;
+      --cp-accent-hover: #9a1a41;
+      --cp-accent-soft: rgba(177, 31, 75, 0.08);
+      --cp-accent-fg: #ffffff;
+      --cp-success: #16a34a;
+      --cp-danger: #dc2626;
+      --cp-warning: #f59e0b;
+      --cp-link: #0078d4;
+      --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
+      --cp-overlay: rgba(255, 255, 255, 0.8);
+      --cp-panel: rgba(255, 255, 255, 0.86);
+      --cp-panel-strong: rgba(255, 255, 255, 0.96);
+      --cp-sheen: rgba(255, 255, 255, 0.55);
+      --cp-highlight: rgba(177, 31, 75, 0.12);
+    }
+    html[data-theme="dark"] {
+      color-scheme: dark;
+      --cp-bg: #3d3b3a;
+      --cp-bg-elevated: #343231;
+      --cp-surface: #292929;
+      --cp-surface-soft: #2e2e2e;
+      --cp-border: #474747;
+      --cp-border-strong: #5f5f5f;
+      --cp-text: #dedede;
+      --cp-text-muted: #919191;
+      --cp-text-soft: #b0b0b0;
+      --cp-accent: #fd8ea1;
+      --cp-accent-hover: #fb7b91;
+      --cp-accent-soft: rgba(253, 142, 161, 0.14);
+      --cp-accent-fg: #1a1a1a;
+      --cp-success: #4ade80;
+      --cp-danger: #f87171;
+      --cp-warning: #fbbf24;
+      --cp-link: #4da6ff;
+      --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+      --cp-overlay: rgba(41, 41, 41, 0.88);
+      --cp-panel: rgba(41, 41, 41, 0.72);
+      --cp-panel-strong: rgba(41, 41, 41, 0.96);
+      --cp-sheen: rgba(255, 255, 255, 0.04);
+      --cp-highlight: rgba(253, 142, 161, 0.12);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--cp-bg);
+      color: var(--cp-text);
+      font-family: "Segoe UI", Aptos, Calibri, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    a { color: var(--cp-link); }
+    .app { min-height: 100vh; }
+    .topbar {
+      height: 64px;
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--cp-border);
+      background: var(--cp-panel-strong);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+    .brand { display: flex; align-items: center; gap: 14px; }
+    .mark {
+      width: 34px; height: 34px; border-radius: 50%;
+      border: 8px solid var(--cp-accent);
+      position: relative;
+    }
+    .mark::after {
+      content: ""; position: absolute; width: 9px; height: 9px;
+      border-radius: 50%; background: var(--cp-bg); top: -6px; right: -5px;
+    }
+    .brand-name { font-weight: 800; letter-spacing: .13em; font-size: 15px; }
+    .brand-sub { font-size: 11px; color: var(--cp-text-muted); letter-spacing: .04em; margin-top: 2px; }
+    .top-actions { display: flex; gap: 10px; align-items: center; }
+    .pill, .button {
+      border: 1px solid var(--cp-border);
+      border-radius: 0.625rem;
+      background: var(--cp-surface);
+      color: var(--cp-text);
+      padding: 9px 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .button.primary { background: var(--cp-accent); color: var(--cp-accent-fg); border-color: var(--cp-accent); }
+    .button:hover { border-color: var(--cp-border-strong); }
+    .layout { display: grid; grid-template-columns: 228px 1fr; min-height: calc(100vh - 64px); }
+    .sidebar {
+      padding: 24px 16px;
+      border-right: 1px solid var(--cp-border);
+      background: var(--cp-bg-elevated);
+    }
+    .nav-label { font-size: 10px; color: var(--cp-text-muted); font-weight: 700; letter-spacing: .11em; margin: 0 10px 10px; }
+    .nav { display: grid; gap: 5px; }
+    .nav button {
+      border: 0; background: transparent; color: var(--cp-text-muted);
+      display: flex; align-items: center; gap: 11px; width: 100%;
+      padding: 10px 11px; border-radius: 0.625rem; text-align: left; font-weight: 600; font-size: 13px;
+    }
+    .nav button:hover, .nav button.active { background: var(--cp-accent-soft); color: var(--cp-accent); }
+    .nav-icon { width: 18px; text-align: center; }
+    .sidebar-note {
+      margin-top: 30px; padding: 14px; border: 1px solid var(--cp-border);
+      border-radius: 16px; background: var(--cp-surface);
+    }
+    .sidebar-note strong { font-size: 12px; }
+    .sidebar-note p { font-size: 11px; color: var(--cp-text-muted); line-height: 1.5; margin: 7px 0 0; }
+    main { padding: 28px; min-width: 0; }
+    .page { display: none; }
+    .page.active { display: block; }
+    .hero {
+      display: flex; justify-content: space-between; gap: 24px; align-items: flex-end; margin-bottom: 22px;
+    }
+    .eyebrow { color: var(--cp-accent); font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    h1 { font-size: 31px; margin: 7px 0; letter-spacing: -.025em; }
+    .hero p { margin: 0; color: var(--cp-text-muted); font-size: 14px; max-width: 700px; line-height: 1.55; }
+    .source-tag {
+      display: inline-flex; align-items: center; gap: 6px; padding: 5px 8px; border-radius: 999px;
+      font-size: 10px; font-weight: 700; background: var(--cp-surface-soft); border: 1px solid var(--cp-border);
+      color: var(--cp-text-muted); white-space: nowrap;
+    }
+    .source-tag.synthetic { color: var(--cp-warning); }
+    .source-tag.public { color: var(--cp-success); }
+    .grid { display: grid; gap: 16px; }
+    .metrics { grid-template-columns: repeat(4, 1fr); margin-bottom: 16px; }
+    .metric, .card {
+      background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 16px;
+      box-shadow: 0 0 2px var(--cp-border), 0 1px 2px var(--cp-border);
+    }
+    .metric { padding: 17px; }
+    .metric-top { display: flex; justify-content: space-between; gap: 8px; align-items: center; }
+    .metric-label { font-size: 11px; color: var(--cp-text-muted); font-weight: 600; }
+    .metric-value { font-size: 25px; font-weight: 750; margin-top: 11px; }
+    .metric-sub { font-size: 11px; margin-top: 5px; color: var(--cp-text-muted); }
+    .up { color: var(--cp-success); } .down { color: var(--cp-danger); }
+    .dashboard { grid-template-columns: 1.35fr .85fr; }
+    .card { padding: 18px; overflow: hidden; }
+    .card-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 15px; }
+    .card-title { font-weight: 750; font-size: 15px; }
+    .card-sub { color: var(--cp-text-muted); font-size: 11px; margin-top: 4px; line-height: 1.4; }
+    .map-wrap { display: grid; grid-template-columns: 1fr 205px; gap: 14px; min-height: 410px; }
+    .map {
+      border-radius: 12px; position: relative; overflow: hidden; min-height: 390px;
+      background: var(--cp-surface-soft);
+      border: 1px solid var(--cp-border);
+    }
+    .colombia-map { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .country-shape { fill: var(--cp-accent-soft); stroke: var(--cp-accent); stroke-width: 3; vector-effect: non-scaling-stroke; }
+    .map-river { fill: none; stroke: var(--cp-link); stroke-width: 2; opacity: .42; vector-effect: non-scaling-stroke; }
+    .map-region { fill: none; stroke: var(--cp-border-strong); stroke-width: 1; stroke-dasharray: 5 6; opacity: .5; vector-effect: non-scaling-stroke; }
+    .map-text { fill: var(--cp-text-muted); font-size: 13px; font-weight: 650; }
+    .map-water { fill: var(--cp-link); font-size: 11px; font-style: italic; }
+    .pin {
+      position: absolute; width: 15px; height: 15px; border-radius: 50%;
+      background: var(--cp-accent); border: 3px solid var(--cp-surface);
+      box-shadow: 0 0 0 2px var(--cp-accent); transition: transform .2s; z-index: 2;
+    }
+    .pin:hover { transform: scale(1.35); }
+    .pin.active { background: var(--cp-success); box-shadow: 0 0 0 3px var(--cp-highlight); }
+    .pin[data-id="magdalena"] { left: 52.5%; top: 37.9%; }
+    .pin[data-id="bogota"] { left: 51.3%; top: 49.8%; }
+    .pin[data-id="cauca"] { left: 37.4%; top: 56.2%; }
+    .pin[data-id="amazon"] { left: 36.7%; top: 67.8%; }
+    .map-label {
+      position: absolute; top: 14px; left: 14px; font-size: 10px; font-weight: 700;
+      padding: 6px 8px; border-radius: 8px; background: var(--cp-panel-strong); border: 1px solid var(--cp-border);
+    }
+    .project-list { display: grid; gap: 8px; align-content: start; }
+    .project {
+      padding: 11px; border: 1px solid var(--cp-border); border-radius: 10px; background: var(--cp-bg-elevated);
+      transition: .2s; cursor: pointer;
+    }
+    .project:hover, .project.active { border-color: var(--cp-accent); background: var(--cp-accent-soft); }
+    .project-name { font-size: 12px; font-weight: 700; }
+    .project-desc { font-size: 9px; color: var(--cp-text-muted); line-height: 1.35; margin-top: 5px; }
+    .project-meta { font-size: 10px; color: var(--cp-text-muted); margin-top: 5px; display: flex; justify-content: space-between; }
+    .progress { height: 5px; background: var(--cp-border); border-radius: 99px; margin-top: 9px; overflow: hidden; }
+    .progress span { display: block; height: 100%; background: var(--cp-accent); }
+    .right-stack { display: grid; gap: 16px; }
+    .chart { height: 135px; display: flex; align-items: end; gap: 9px; padding: 8px 4px 0; }
+    .bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+    .bar { width: 100%; max-width: 28px; background: var(--cp-accent); border-radius: 5px 5px 2px 2px; opacity: .8; }
+    .bar-label { font-size: 9px; color: var(--cp-text-muted); margin-top: 6px; }
+    .signal { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--cp-border); }
+    .signal:last-child { border-bottom: 0; }
+    .signal-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--cp-success); flex: 0 0 auto; }
+    .signal-dot.warn { background: var(--cp-warning); }
+    .signal-text { font-size: 11px; line-height: 1.4; }
+    .signal-text strong { display: block; font-size: 12px; }
+    .toolbar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .toolbar button.active { background: var(--cp-accent); color: var(--cp-accent-fg); border-color: var(--cp-accent); }
+    .pipeline { grid-template-columns: repeat(4, 1fr); align-items: start; }
+    .column { background: var(--cp-surface-soft); border: 1px solid var(--cp-border); border-radius: 16px; padding: 12px; min-height: 420px; }
+    .column-head { font-size: 12px; font-weight: 750; display: flex; justify-content: space-between; margin-bottom: 12px; }
+    .count { color: var(--cp-text-muted); }
+    .deal { background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 10px; padding: 12px; margin-bottom: 10px; }
+    .deal h3 { font-size: 12px; margin: 0 0 8px; line-height: 1.35; }
+    .deal-row { display: flex; justify-content: space-between; font-size: 10px; color: var(--cp-text-muted); margin-top: 6px; }
+    .score { color: var(--cp-accent); font-weight: 800; }
+    .financial-layout { display: grid; grid-template-columns: 250px 1fr; gap: 16px; align-items: start; }
+    .finance-selector { display: grid; gap: 8px; }
+    .finance-choice { text-align: left; padding: 12px; border: 1px solid var(--cp-border); border-radius: 10px; background: var(--cp-surface); color: var(--cp-text); }
+    .finance-choice:hover, .finance-choice.active { border-color: var(--cp-accent); background: var(--cp-accent-soft); }
+    .finance-choice strong { display: block; font-size: 11px; }
+    .finance-choice small { color: var(--cp-text-muted); font-size: 9px; display: block; margin-top: 4px; }
+    .financial-content { display: grid; gap: 14px; }
+    .financial-kpis { grid-template-columns: repeat(4, 1fr); }
+    .capital-bar { height: 28px; display: flex; overflow: hidden; border-radius: 8px; border: 1px solid var(--cp-border); margin: 12px 0 8px; }
+    .capital-segment { height: 100%; min-width: 3px; border-right: 1px solid var(--cp-surface); background: var(--cp-accent); }
+    .capital-segment:nth-child(2) { opacity: .78; }
+    .capital-segment:nth-child(3) { opacity: .55; }
+    .capital-segment:nth-child(4) { opacity: .32; border-right: 0; }
+    .capital-legend { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; }
+    .capital-legend div { font-size: 9px; color: var(--cp-text-muted); }
+    .capital-legend strong { color: var(--cp-text); display: block; font-size: 10px; margin-bottom: 2px; }
+    .financial-table { width: 100%; border-collapse: collapse; font-size: 10px; }
+    .financial-table th, .financial-table td { padding: 9px 8px; text-align: right; border-bottom: 1px solid var(--cp-border); }
+    .financial-table th:first-child, .financial-table td:first-child { text-align: left; }
+    .financial-table th { color: var(--cp-text-muted); font-size: 9px; }
+    .scenario-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    .formula { font-family: Consolas, "Courier New", Courier, monospace; font-size: 9px; padding: 10px; border: 1px dashed var(--cp-border-strong); border-radius: 9px; color: var(--cp-text-muted); line-height: 1.5; }
+    .assumption-list { display: grid; gap: 8px; }
+    .assumption { display: grid; grid-template-columns: 150px 1fr; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--cp-border); font-size: 10px; }
+    .assumption strong { font-size: 10px; }
+    .assumption span { color: var(--cp-text-muted); line-height: 1.45; }
+    .integrity-layout { display: grid; grid-template-columns: 280px 1fr; gap: 16px; align-items: start; }
+    .review-queue { display: grid; gap: 8px; }
+    .review-item {
+      width: 100%; text-align: left; padding: 12px; border: 1px solid var(--cp-border);
+      border-radius: 10px; background: var(--cp-surface); color: var(--cp-text);
+    }
+    .review-item:hover, .review-item.active { border-color: var(--cp-accent); background: var(--cp-accent-soft); }
+    .review-item strong { display: block; font-size: 11px; margin-bottom: 5px; }
+    .review-item small { color: var(--cp-text-muted); font-size: 9px; line-height: 1.35; }
+    .review-meta { display: flex; justify-content: space-between; gap: 8px; margin-top: 8px; font-size: 9px; }
+    .risk-high { color: var(--cp-danger); font-weight: 800; }
+    .risk-medium { color: var(--cp-warning); font-weight: 800; }
+    .risk-low { color: var(--cp-success); font-weight: 800; }
+    .review-panel { display: grid; gap: 14px; }
+    .decision-head { display: grid; grid-template-columns: 1fr 120px; gap: 16px; align-items: center; }
+    .decision-score {
+      width: 104px; height: 104px; border-radius: 50%; border: 11px solid var(--cp-accent);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; margin-left: auto;
+      background: var(--cp-surface-soft);
+    }
+    .decision-score strong { font-size: 25px; line-height: 1; }
+    .decision-score small { font-size: 9px; color: var(--cp-text-muted); margin-top: 4px; }
+    .decision-label { display: inline-flex; padding: 6px 9px; border-radius: 8px; font-size: 10px; font-weight: 800; background: var(--cp-accent-soft); color: var(--cp-accent); margin-top: 8px; }
+    .screening-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 9px; }
+    .screening {
+      border: 1px solid var(--cp-border); border-radius: 10px; padding: 11px;
+      display: grid; grid-template-columns: 26px 1fr; gap: 9px; align-items: start;
+    }
+    .screening-icon {
+      width: 25px; height: 25px; border-radius: 50%; display: flex; align-items: center;
+      justify-content: center; background: var(--cp-surface-soft); font-size: 11px; font-weight: 800;
+    }
+    .screening strong { display: block; font-size: 11px; }
+    .screening p { margin: 4px 0 0; font-size: 9px; color: var(--cp-text-muted); line-height: 1.4; }
+    .match-table { width: 100%; border-collapse: collapse; font-size: 10px; }
+    .match-table th, .match-table td { padding: 9px 7px; border-bottom: 1px solid var(--cp-border); text-align: left; vertical-align: top; }
+    .match-table th { color: var(--cp-text-muted); font-size: 9px; }
+    .confidence { font-weight: 800; color: var(--cp-accent); }
+    .recommendations { display: grid; gap: 8px; }
+    .recommendation { padding: 10px; border-left: 3px solid var(--cp-accent); background: var(--cp-surface-soft); border-radius: 0 9px 9px 0; }
+    .recommendation strong { font-size: 10px; display: block; }
+    .recommendation span { color: var(--cp-text-muted); font-size: 9px; line-height: 1.4; display: block; margin-top: 3px; }
+    .decision-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .audit-trail { font-family: Consolas, "Courier New", Courier, monospace; font-size: 9px; color: var(--cp-text-muted); padding: 10px; border: 1px dashed var(--cp-border-strong); border-radius: 10px; }
+    .matrix { display: grid; grid-template-columns: 230px 1fr; gap: 18px; }
+    .controls { display: grid; gap: 14px; align-content: start; }
+    .control label { display: flex; justify-content: space-between; font-size: 11px; font-weight: 650; margin-bottom: 7px; }
+    input[type="range"] { width: 100%; accent-color: var(--cp-accent); }
+    .synergy-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 7px; }
+    .cell {
+      aspect-ratio: 1; border-radius: 9px; border: 1px solid var(--cp-border);
+      display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 750;
+      background: var(--cp-surface-soft);
+    }
+    .cell.hot { background: var(--cp-accent); color: var(--cp-accent-fg); }
+    .cell.mid { background: var(--cp-accent-soft); color: var(--cp-accent); }
+    .network-stage {
+      min-height: 480px; border: 1px solid var(--cp-border); border-radius: 12px;
+      background: var(--cp-surface-soft); position: relative; overflow: hidden;
+    }
+    .network-stage::before {
+      content: ""; position: absolute; inset: 0;
+      background-image: radial-gradient(var(--cp-border) 1px, transparent 1px);
+      background-size: 24px 24px; opacity: .55;
+    }
+    .network-svg { position: relative; width: 100%; height: 480px; display: block; }
+    .network-edge { fill: none; stroke: var(--cp-border-strong); opacity: .42; stroke-linecap: round; }
+    .network-edge.synergy { stroke: var(--cp-accent); opacity: .72; }
+    .network-edge.outcome { stroke: var(--cp-success); opacity: .55; }
+    .network-edge.conflict { stroke: var(--cp-danger); stroke-dasharray: 7 6; opacity: .8; }
+    .network-node { cursor: pointer; }
+    .network-node circle { fill: var(--cp-surface); stroke: var(--cp-border-strong); stroke-width: 2; transition: .2s; }
+    .network-node.core circle { fill: var(--cp-accent-soft); stroke: var(--cp-accent); }
+    .network-node.outcome circle { fill: var(--cp-surface); stroke: var(--cp-success); }
+    .network-node:hover circle { stroke-width: 4; }
+    .network-node text { fill: var(--cp-text); font-size: 12px; font-weight: 750; text-anchor: middle; pointer-events: none; }
+    .network-node .node-sub { fill: var(--cp-text-muted); font-size: 9px; font-weight: 500; }
+    .network-legend { display: flex; flex-wrap: wrap; gap: 12px; margin: 12px 0 0; font-size: 10px; color: var(--cp-text-muted); }
+    .legend-line { width: 24px; height: 3px; border-radius: 99px; background: var(--cp-accent); display: inline-block; vertical-align: middle; margin-right: 5px; }
+    .legend-line.outcome { background: var(--cp-success); }
+    .legend-line.conflict { background: var(--cp-danger); }
+    .network-insight { margin-top: 12px; padding: 12px; border-radius: 10px; background: var(--cp-accent-soft); font-size: 11px; line-height: 1.45; }
+    .agent-layout { display: grid; grid-template-columns: 1fr 320px; gap: 16px; }
+    .chat { min-height: 510px; display: flex; flex-direction: column; }
+    .messages { flex: 1; display: grid; gap: 12px; align-content: start; padding-bottom: 18px; }
+    .message { max-width: 82%; padding: 12px 14px; border-radius: 14px; font-size: 12px; line-height: 1.55; border: 1px solid var(--cp-border); }
+    .message.ai { background: var(--cp-surface-soft); }
+    .message.user { margin-left: auto; background: var(--cp-accent); color: var(--cp-accent-fg); border-color: var(--cp-accent); }
+    .chat-input { display: flex; gap: 8px; border-top: 1px solid var(--cp-border); padding-top: 14px; }
+    .chat-input input {
+      flex: 1; border: 1px solid var(--cp-border); border-radius: 0.625rem; background: var(--cp-bg-elevated);
+      color: var(--cp-text); padding: 11px;
+    }
+    .agent-card { padding: 12px; border: 1px solid var(--cp-border); border-radius: 12px; margin-bottom: 10px; }
+    .agent-card strong { font-size: 12px; }
+    .agent-card p { font-size: 10px; color: var(--cp-text-muted); margin: 6px 0 0; line-height: 1.45; }
+    .agent-flow { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 9px; }
+    .agent-step { padding: 7px; border-radius: 8px; background: var(--cp-surface-soft); font-size: 9px; line-height: 1.4; color: var(--cp-text-muted); }
+    .agent-step b { color: var(--cp-text); display: block; margin-bottom: 2px; }
+    .status { color: var(--cp-success); font-size: 10px; font-weight: 750; float: right; }
+    .architecture { display: grid; gap: 10px; }
+    .layer { padding: 15px; border: 1px solid var(--cp-border); border-radius: 12px; background: var(--cp-surface); }
+    .layer-title { font-weight: 750; font-size: 12px; color: var(--cp-accent); }
+    .layer-items { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 9px; }
+    .tech { padding: 6px 8px; background: var(--cp-surface-soft); border: 1px solid var(--cp-border); border-radius: 8px; font-size: 10px; }
+    .provenance-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+    .provenance-table th, .provenance-table td { padding: 12px 10px; border-bottom: 1px solid var(--cp-border); text-align: left; }
+    .provenance-table th { color: var(--cp-text-muted); font-size: 10px; text-transform: uppercase; letter-spacing: .06em; }
+    .modal {
+      display: none; position: fixed; inset: 0; background: var(--cp-overlay); z-index: 50;
+      align-items: center; justify-content: center; padding: 20px;
+    }
+    .modal.open { display: flex; }
+    .modal-card { max-width: 860px; max-height: 90vh; overflow-y: auto; width: 100%; background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 16px; padding: 22px; box-shadow: var(--cp-shadow); }
+    .modal-card h2 { margin: 0 0 8px; font-size: 19px; }
+    .modal-card p { color: var(--cp-text-muted); font-size: 12px; line-height: 1.55; }
+    .detail-grid { grid-template-columns: repeat(3, 1fr); margin: 16px 0; }
+    .detail { padding: 11px; border: 1px solid var(--cp-border); border-radius: 10px; }
+    .detail small { color: var(--cp-text-muted); display: block; }
+    .detail strong { font-size: 14px; display: block; margin-top: 5px; }
+    .finance-title { font-size: 13px; font-weight: 750; margin: 20px 0 10px; }
+    .finance-stack { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .finance-item { padding: 10px; border: 1px solid var(--cp-border); border-radius: 10px; background: var(--cp-surface-soft); }
+    .finance-item small { display: block; color: var(--cp-text-muted); font-size: 9px; line-height: 1.3; }
+    .finance-item strong { display: block; font-size: 15px; margin: 5px 0 2px; }
+    .evidence-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+    .evidence { border: 1px solid var(--cp-border); border-radius: 10px; padding: 11px; }
+    .evidence-label { color: var(--cp-accent); font-size: 9px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .evidence strong { display: block; font-size: 11px; margin: 5px 0; }
+    .evidence p { font-size: 10px; margin: 0 0 7px; }
+    .evidence a { font-size: 10px; font-weight: 650; }
+    .disclaimer { padding: 10px; margin-top: 12px; background: var(--cp-accent-soft); border-radius: 10px; font-size: 10px; line-height: 1.45; color: var(--cp-text-muted); }
+    .toast {
+      position: fixed; right: 22px; bottom: 22px; background: var(--cp-panel-strong);
+      border: 1px solid var(--cp-border); border-radius: 12px; padding: 12px 15px;
+      box-shadow: var(--cp-shadow); font-size: 12px; transform: translateY(100px); opacity: 0; transition: .25s; z-index: 60;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    @media (max-width: 980px) {
+      .layout { grid-template-columns: 76px 1fr; }
+      .sidebar { padding: 20px 10px; }
+      .nav-label, .nav span:not(.nav-icon), .sidebar-note { display: none; }
+      .nav button { justify-content: center; }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .dashboard, .agent-layout, .integrity-layout, .financial-layout { grid-template-columns: 1fr; }
+      .pipeline { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 680px) {
+      main { padding: 18px; }
+      .topbar { padding: 0 16px; }
+      .top-actions .pill { display: none; }
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { position: fixed; z-index: 30; bottom: 0; left: 0; right: 0; border-right: 0; border-top: 1px solid var(--cp-border); padding: 8px; }
+      .nav { grid-template-columns: repeat(8, 1fr); }
+      .nav button { padding: 9px 4px; }
+      main { padding-bottom: 82px; }
+      .metrics, .pipeline, .matrix, .detail-grid, .finance-stack, .evidence-grid, .screening-grid, .decision-head, .financial-kpis, .scenario-grid, .capital-legend { grid-template-columns: 1fr; }
+      .assumption { grid-template-columns: 1fr; gap: 3px; }
+      .decision-score { margin: 0; }
+      .map-wrap { grid-template-columns: 1fr; }
+      .hero { display: block; }
+      .hero .source-tag { margin-top: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark"></div>
+        <div>
+          <div class="brand-name">ALTAMIRA</div>
+          <div class="brand-sub">Regenerative Investment Studio · Colombia</div>
+        </div>
+      </div>
+      <div class="top-actions">
+        <span class="pill">Demo workspace · Sep 2026</span>
+        <button class="button" id="themeBtn">Toggle theme</button>
+        <button class="button primary" id="briefBtn">Generate investor brief</button>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="nav-label">Workspace</div>
+        <nav class="nav">
+          <button class="active" data-page="overview"><span class="nav-icon">◫</span><span>Portfolio overview</span></button>
+          <button data-page="pipeline"><span class="nav-icon">◇</span><span>Investment pipeline</span></button>
+          <button data-page="financials"><span class="nav-icon">$</span><span>Project financials</span></button>
+          <button data-page="integrity"><span class="nav-icon">✓</span><span>Integrity review</span></button>
+          <button data-page="synergy"><span class="nav-icon">⌘</span><span>Synergy studio</span></button>
+          <button data-page="agents"><span class="nav-icon">✦</span><span>AI advisory</span></button>
+          <button data-page="architecture"><span class="nav-icon">▦</span><span>Microsoft stack</span></button>
+          <button data-page="sources"><span class="nav-icon">◎</span><span>Data & provenance</span></button>
+        </nav>
+        <div class="sidebar-note">
+          <strong>Mission-driven by design</strong>
+          <p>Move from isolated projects to a coordinated, place-based portfolio—then make the portfolio legible to public and private capital.</p>
+        </div>
+      </aside>
+
+      <main>
+        <section class="page active" id="overview">
+          <div class="hero">
+            <div>
+              <div class="eyebrow">Portfolio command center</div>
+              <h1>Regenerative Colombia 2035</h1>
+              <p>A transparent investment pathway connecting water resilience, biodiversity, livelihoods and infrastructure—designed to originate better investments before choosing how to finance them.</p>
+            </div>
+            <span class="source-tag synthetic">◆ Portfolio and project data: synthetic</span>
+          </div>
+          <div class="grid metrics">
+            <div class="metric">
+              <div class="metric-top"><span class="metric-label">Portfolio value</span><span class="source-tag synthetic">Synthetic</span></div>
+              <div class="metric-value">$428M</div><div class="metric-sub">12 coordinated investments</div>
+            </div>
+            <div class="metric">
+              <div class="metric-top"><span class="metric-label">Capital mobilized</span><span class="source-tag synthetic">Synthetic</span></div>
+              <div class="metric-value">2.6×</div><div class="metric-sub up">↑ $263 non-government per $100 domestic public</div>
+            </div>
+            <div class="metric">
+              <div class="metric-top"><span class="metric-label">Forest cover</span><span class="source-tag public">Public</span></div>
+              <div class="metric-value">53.6%</div><div class="metric-sub down">2025 · down from 54.5% in 2018</div>
+            </div>
+            <div class="metric">
+              <div class="metric-top"><span class="metric-label">Freshwater withdrawal</span><span class="source-tag public">Public</span></div>
+              <div class="metric-value">1.13%</div><div class="metric-sub">of internal resources · 2022</div>
+            </div>
+          </div>
+          <div class="grid dashboard">
+            <div class="card">
+              <div class="card-head">
+                <div><div class="card-title">Place-based investment map</div><div class="card-sub">Select a mission cluster to inspect its investment logic.</div></div>
+                <span class="source-tag synthetic">Azure Maps mock</span>
+              </div>
+              <div class="map-wrap">
+                <div class="map">
+                  <div class="map-label">Colombia · Natural Earth geometry</div>
+                  <svg class="colombia-map" viewBox="0 0 500 600" role="img" aria-label="Geographically accurate outline of Colombia">
+                    <path class="country-shape" d="M 121.9 398.1 L 116.4 391.9 L 129.2 387.6 L 129.1 367.8 L 135.5 361.3 L 152.1 363.0 L 172.7 322.9 L 161.3 319.4 L 166.9 312.3 L 157.8 274.8 L 166.7 267.8 L 159.9 254.0 L 163.8 242.6 L 148.3 222.3 L 152.0 208.0 L 157.2 213.4 L 169.0 200.9 L 161.3 180.0 L 180.5 201.4 L 175.1 182.6 L 203.5 155.4 L 212.6 155.1 L 215.2 131.2 L 210.3 134.4 L 222.6 114.4 L 234.6 104.8 L 250.0 108.4 L 241.6 112.2 L 247.3 115.7 L 254.1 97.7 L 278.5 99.2 L 307.6 81.3 L 311.1 70.1 L 316.8 72.8 L 324.2 63.6 L 335.9 67.5 L 339.4 77.4 L 315.3 88.5 L 295.7 112.5 L 275.7 163.5 L 292.7 165.3 L 305.5 195.9 L 301.5 214.7 L 315.2 229.0 L 368.0 230.2 L 392.9 257.3 L 443.7 253.7 L 432.9 279.7 L 431.7 304.2 L 447.7 339.0 L 432.3 357.0 L 451.1 369.0 L 459.8 400.7 L 454.0 405.9 L 444.5 376.8 L 430.2 388.8 L 422.7 380.5 L 423.6 389.4 L 375.7 389.8 L 375.8 409.5 L 391.7 410.1 L 396.0 421.9 L 370.1 423.8 L 369.7 446.4 L 382.4 457.5 L 388.6 477.4 L 372.6 570.0 L 362.8 557.7 L 350.8 556.2 L 368.6 521.2 L 346.0 508.6 L 331.4 513.6 L 322.2 506.2 L 310.0 514.6 L 288.6 515.1 L 268.7 479.6 L 250.9 471.1 L 235.1 446.8 L 193.4 427.6 L 185.9 435.0 L 162.4 429.8 L 153.7 416.0 L 121.9 398.1 Z"/>
+                    <path class="map-river" d="M274 153 C252 198 260 235 250 278 C240 323 228 358 239 400"/>
+                    <path class="map-river" d="M214 210 C205 255 211 310 194 360 C187 383 183 410 201 433"/>
+                    <path class="map-region" d="M163 274 C220 284 285 274 335 230 M172 323 C235 340 310 342 432 304 M194 428 C253 392 317 402 370 446"/>
+                    <text class="map-water" x="258" y="260" transform="rotate(9 258 260)">Magdalena River</text>
+                    <text class="map-text" x="267" y="305">Bogotá</text>
+                    <text class="map-text" x="172" y="350">Cali</text>
+                    <text class="map-text" x="185" y="415">Mocoa</text>
+                    <text class="map-text" x="237" y="111">Caribbean Sea</text>
+                  </svg>
+                  <button class="pin active" data-id="magdalena" aria-label="Magdalena basin"></button>
+                  <button class="pin" data-id="bogota" aria-label="Bogota region"></button>
+                  <button class="pin" data-id="cauca" aria-label="Cauca valley"></button>
+                  <button class="pin" data-id="amazon" aria-label="Amazon gateway"></button>
+                </div>
+                <div class="project-list">
+                  <div class="project active" data-id="magdalena"><div class="project-name">Magdalena Basin Resilience</div><div class="project-desc">Floodplain restoration, risk intelligence and resilient livelihoods.</div><div class="project-meta"><span>$146M</span><span>78 ready</span></div><div class="progress"><span style="width:78%"></span></div></div>
+                  <div class="project" data-id="bogota"><div class="project-name">Bogotá Circular Water</div><div class="project-desc">Industrial reuse, resource recovery and performance-based operations.</div><div class="project-meta"><span>$94M</span><span>64 ready</span></div><div class="progress"><span style="width:64%"></span></div></div>
+                  <div class="project" data-id="cauca"><div class="project-name">Cauca Regenerative Corridor</div><div class="project-desc">Agroforestry, watershed restoration, traceability and producer finance.</div><div class="project-meta"><span>$112M</span><span>71 ready</span></div><div class="progress"><span style="width:71%"></span></div></div>
+                  <div class="project" data-id="amazon"><div class="project-name">Amazon Bioeconomy Gateway</div><div class="project-desc">Community forest enterprises, native seeds and biodiversity outcomes.</div><div class="project-meta"><span>$76M</span><span>52 ready</span></div><div class="progress"><span style="width:52%"></span></div></div>
+                </div>
+              </div>
+            </div>
+            <div class="right-stack">
+              <div class="card">
+                <div class="card-head"><div><div class="card-title">Expected outcomes</div><div class="card-sub">Portfolio-level benefit forecast</div></div><span class="source-tag synthetic">Synthetic</span></div>
+                <div class="chart">
+                  <div class="bar-wrap"><div class="bar" style="height:54%"></div><div class="bar-label">Water</div></div>
+                  <div class="bar-wrap"><div class="bar" style="height:76%"></div><div class="bar-label">Nature</div></div>
+                  <div class="bar-wrap"><div class="bar" style="height:67%"></div><div class="bar-label">Jobs</div></div>
+                  <div class="bar-wrap"><div class="bar" style="height:83%"></div><div class="bar-label">Resilience</div></div>
+                  <div class="bar-wrap"><div class="bar" style="height:61%"></div><div class="bar-label">Carbon</div></div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-head"><div><div class="card-title">Portfolio signals</div><div class="card-sub">AI-detected coordination opportunities</div></div></div>
+                <div class="signal"><span class="signal-dot"></span><div class="signal-text"><strong>$31M shared-enabler opportunity</strong>Three projects can share watershed monitoring and procurement.</div></div>
+                <div class="signal"><span class="signal-dot warn"></span><div class="signal-text"><strong>Safeguard definition mismatch</strong>Two funders use conflicting livelihood-benefit thresholds.</div></div>
+                <div class="signal"><span class="signal-dot"></span><div class="signal-text"><strong>Blended-finance pathway found</strong>Public first-loss capital could unlock institutional co-investment.</div></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="page" id="pipeline">
+          <div class="hero">
+            <div><div class="eyebrow">Investment origination</div><h1>From mission to bankable pipeline</h1><p>Track each intervention through a shared public-private evidence model, with readiness and dependencies visible across the portfolio.</p></div>
+            <span class="source-tag synthetic">All opportunities are synthetic</span>
+          </div>
+          <div class="toolbar">
+            <button class="button active" data-filter="all">All missions</button>
+            <button class="button" data-filter="water">Water</button>
+            <button class="button" data-filter="nature">Nature</button>
+            <button class="button" data-filter="livelihoods">Livelihoods</button>
+          </div>
+          <div class="grid pipeline">
+            <div class="column"><div class="column-head"><span>Discover</span><span class="count">3</span></div>
+              <div class="deal" data-tag="nature"><h3>Amazon non-timber bioeconomy hubs</h3><div class="deal-row"><span>Putumayo</span><span class="score">52 / 100</span></div><div class="deal-row"><span>Need</span><span>$38M</span></div></div>
+              <div class="deal" data-tag="water"><h3>Floodplain intelligence network</h3><div class="deal-row"><span>Magdalena</span><span class="score">48 / 100</span></div><div class="deal-row"><span>Need</span><span>$17M</span></div></div>
+              <div class="deal" data-tag="livelihoods"><h3>Community restoration enterprises</h3><div class="deal-row"><span>Chocó</span><span class="score">43 / 100</span></div><div class="deal-row"><span>Need</span><span>$24M</span></div></div>
+            </div>
+            <div class="column"><div class="column-head"><span>Shape</span><span class="count">3</span></div>
+              <div class="deal" data-tag="water"><h3>Bogotá industrial water reuse</h3><div class="deal-row"><span>Cundinamarca</span><span class="score">64 / 100</span></div><div class="deal-row"><span>Need</span><span>$94M</span></div></div>
+              <div class="deal" data-tag="nature"><h3>Andean headwaters restoration</h3><div class="deal-row"><span>Boyacá</span><span class="score">61 / 100</span></div><div class="deal-row"><span>Need</span><span>$29M</span></div></div>
+              <div class="deal" data-tag="livelihoods"><h3>Climate-smart cacao corridor</h3><div class="deal-row"><span>Santander</span><span class="score">59 / 100</span></div><div class="deal-row"><span>Need</span><span>$41M</span></div></div>
+            </div>
+            <div class="column"><div class="column-head"><span>Structure</span><span class="count">2</span></div>
+              <div class="deal" data-tag="water"><h3>Magdalena wetland resilience bond</h3><div class="deal-row"><span>Multi-department</span><span class="score">78 / 100</span></div><div class="deal-row"><span>Need</span><span>$146M</span></div></div>
+              <div class="deal" data-tag="nature"><h3>Cauca landscape performance facility</h3><div class="deal-row"><span>Valle del Cauca</span><span class="score">71 / 100</span></div><div class="deal-row"><span>Need</span><span>$112M</span></div></div>
+            </div>
+            <div class="column"><div class="column-head"><span>Mobilize</span><span class="count">2</span></div>
+              <div class="deal" data-tag="livelihoods"><h3>Rural solar cold-chain platform</h3><div class="deal-row"><span>Caribbean coast</span><span class="score">86 / 100</span></div><div class="deal-row"><span>Committed</span><span>$33M</span></div></div>
+              <div class="deal" data-tag="water"><h3>Municipal leakage performance fund</h3><div class="deal-row"><span>National cohort</span><span class="score">83 / 100</span></div><div class="deal-row"><span>Committed</span><span>$51M</span></div></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="page" id="financials">
+          <div class="hero">
+            <div><div class="eyebrow">Project financial information</div><h1>Capital structure & financial assumptions</h1><p>Inspect each project’s synthetic financial model alongside verified government and donor precedents and evidence-based prospective private partners.</p></div>
+            <span class="source-tag synthetic">Financial projections are synthetic</span>
+          </div>
+          <div class="financial-layout">
+            <div class="card">
+              <div class="card-head"><div><div class="card-title">Select project</div><div class="card-sub">Values shown in nominal USD millions.</div></div></div>
+              <div class="finance-selector">
+                <button class="finance-choice active" data-finance="magdalena"><strong>Magdalena Basin Resilience</strong><small>$146M · floodplain and adaptation portfolio</small></button>
+                <button class="finance-choice" data-finance="bogota"><strong>Bogotá Circular Water</strong><small>$94M · industrial water reuse</small></button>
+                <button class="finance-choice" data-finance="cauca"><strong>Cauca Regenerative Corridor</strong><small>$112M · productive landscape</small></button>
+                <button class="finance-choice" data-finance="amazon"><strong>Amazon Bioeconomy Gateway</strong><small>$76M · community forest value chains</small></button>
+              </div>
+            </div>
+            <div class="financial-content">
+              <div class="card">
+                <div class="card-head"><div><div class="eyebrow" id="financeProjectType">ADAPTATION PORTFOLIO</div><div class="card-title" id="financeProjectTitle">Magdalena Basin Resilience</div><div class="card-sub" id="financeProjectDesc"></div></div><span class="source-tag synthetic">Illustrative model</span></div>
+                <div class="grid financial-kpis">
+                  <div class="detail"><small>Total investment</small><strong id="financeCapex">$146M</strong></div>
+                  <div class="detail"><small>Capital mobilization</small><strong id="financeLeverage">2.0×</strong></div>
+                  <div class="detail"><small>Base NPV proxy</small><strong id="financeNpv">$18.0M</strong></div>
+                  <div class="detail"><small>Base DSCR</small><strong id="financeDscr">1.93×</strong></div>
+                </div>
+                <div class="finance-title">Sources of capital</div>
+                <div class="capital-bar" id="capitalBar"></div>
+                <div class="capital-legend" id="capitalLegend"></div>
+              </div>
+              <div class="card">
+                <div class="card-head"><div><div class="card-title">Operating model</div><div class="card-sub">Synthetic stabilized-year values, not a forecast or investment recommendation.</div></div></div>
+                <table class="financial-table"><thead><tr><th>Financial line</th><th>Year 1</th><th>Year 3</th><th>Stabilized</th></tr></thead><tbody id="cashflowRows"></tbody></table>
+              </div>
+              <div class="card">
+                <div class="card-head"><div><div class="card-title">Scenario test</div><div class="card-sub">Adjust core assumptions to see transparent proxy calculations.</div></div><button class="button" id="resetScenario">Reset</button></div>
+                <div class="scenario-grid">
+                  <div class="control"><label><span>Revenue realization</span><span id="revenueScenarioValue">100%</span></label><input id="revenueScenario" type="range" min="70" max="120" value="100"></div>
+                  <div class="control"><label><span>CAPEX variance</span><span id="capexScenarioValue">0%</span></label><input id="capexScenario" type="range" min="0" max="30" value="0"></div>
+                  <div class="control"><label><span>Delivery delay</span><span id="delayScenarioValue">0 months</span></label><input id="delayScenario" type="range" min="0" max="24" value="0"></div>
+                </div>
+                <div class="grid detail-grid">
+                  <div class="detail"><small>Adjusted NPV proxy</small><strong id="adjustedNpv">$18.0M</strong></div>
+                  <div class="detail"><small>Adjusted DSCR</small><strong id="adjustedDscr">1.93×</strong></div>
+                  <div class="detail"><small>Scenario signal</small><strong id="scenarioSignal">Viable</strong></div>
+                </div>
+                <div class="formula">NPV proxy = base NPV + annual revenue × 5.65 × revenue variance − CAPEX × cost variance − annual net cash flow × delay years. DSCR = (revenue × realization − OPEX) ÷ annual debt service.</div>
+              </div>
+              <div class="card">
+                <div class="card-head"><div><div class="card-title">Verified financing context & partner evidence</div><div class="card-sub">Existing programs are precedents or potential channels—not committed funding for the synthetic project.</div></div></div>
+                <div class="evidence-grid" id="financialEvidence"></div>
+              </div>
+              <div class="card">
+                <div class="card-head"><div><div class="card-title">Calculation and model assumptions</div><div class="card-sub">Definitions used consistently across the prototype.</div></div><span class="source-tag">Transparent methodology</span></div>
+                <div class="assumption-list">
+                  <div class="assumption"><strong>Portfolio value</strong><span>Sum of four synthetic project costs: $146M + $94M + $112M + $76M = $428M.</span></div>
+                  <div class="assumption"><strong>Capital mobilization</strong><span>(Total capital − domestic public capital) ÷ domestic public capital. Portfolio: ($428M − $118M) ÷ $118M = 2.63×, displayed as 2.6×.</span></div>
+                  <div class="assumption"><strong>Readiness score</strong><span>Synthetic 0–100 composite: technical 25%, institutional 20%, safeguards 15%, financing 20%, market/revenue 10%, data quality 10%.</span></div>
+                  <div class="assumption"><strong>NPV proxy</strong><span>Illustrative nominal USD result using a 10% discount rate and simplified stabilized cash-flow assumptions. It excludes tax, FX, detailed depreciation and terminal-value appraisal.</span></div>
+                  <div class="assumption"><strong>DSCR</strong><span>Stabilized operating cash available for debt service divided by annual debt service. Values above 1.0× cover modeled payments; lender requirements may be higher.</span></div>
+                  <div class="assumption"><strong>Synergy efficiency</strong><span>Synthetic screening proxy: $12M base opportunity plus the sum of four mission weights divided by 18. It estimates shared preparation and enabling costs only.</span></div>
+                  <div class="assumption"><strong>Integrity score</strong><span>Synthetic rules-based composite across identity, duplication, conflicts, feasibility, partner risk and evidence integrity. It prioritizes review and never determines fraud or approval.</span></div>
+                  <div class="assumption"><strong>Public indicators</strong><span>Forest cover and freshwater withdrawal are copied from cited public datasets; no forecasting or interpolation is applied in the headline metrics.</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="page" id="integrity">
+          <div class="hero">
+            <div><div class="eyebrow">Government decision support</div><h1>Financing integrity review</h1><p>Screen applications for fraud indicators, duplicate funding, conflicting interventions, risky partners and evidence gaps—then provide applicants with actionable recommendations before a human decision.</p></div>
+            <span class="source-tag synthetic">All applications and findings are synthetic</span>
+          </div>
+          <div class="grid metrics">
+            <div class="metric"><div class="metric-top"><span class="metric-label">Applications screened</span><span class="source-tag synthetic">Demo</span></div><div class="metric-value">148</div><div class="metric-sub">Across national and donor windows</div></div>
+            <div class="metric"><div class="metric-top"><span class="metric-label">Potential duplicate financing</span><span class="source-tag synthetic">Demo</span></div><div class="metric-value">11</div><div class="metric-sub down">$38.4M requiring reconciliation</div></div>
+            <div class="metric"><div class="metric-top"><span class="metric-label">Partner risk escalations</span><span class="source-tag synthetic">Demo</span></div><div class="metric-value">7</div><div class="metric-sub">Beneficial ownership or delivery concerns</div></div>
+            <div class="metric"><div class="metric-top"><span class="metric-label">Avoided overlap</span><span class="source-tag synthetic">Demo</span></div><div class="metric-value">$24M</div><div class="metric-sub up">Redirectable to unfunded outcomes</div></div>
+          </div>
+          <div class="integrity-layout">
+            <div class="card">
+              <div class="card-head"><div><div class="card-title">Approval queue</div><div class="card-sub">Select a synthetic application.</div></div><span class="source-tag synthetic">4 cases</span></div>
+              <div class="review-queue">
+                <button class="review-item active" data-review="magdalena-fund"><strong>A-2026-184 · Magdalena Nature Recovery</strong><small>Fundación Río Vivo · COP 82B request</small><span class="review-meta"><span>6 alerts</span><span class="risk-high">High risk</span></span></button>
+                <button class="review-item" data-review="bogota-reuse"><strong>A-2026-203 · Bogotá Industrial Reuse</strong><small>Consorcio Agua Circular · COP 146B request</small><span class="review-meta"><span>3 alerts</span><span class="risk-medium">Medium risk</span></span></button>
+                <button class="review-item" data-review="cauca-corridor"><strong>A-2026-221 · Cauca Productive Corridor</strong><small>Alianza Campo Vivo · COP 61B request</small><span class="review-meta"><span>2 alerts</span><span class="risk-low">Low risk</span></span></button>
+                <button class="review-item" data-review="amazon-hubs"><strong>A-2026-238 · Amazon Bioeconomy Hubs</strong><small>BioSelva Colombia SAS · COP 97B request</small><span class="review-meta"><span>5 alerts</span><span class="risk-high">High risk</span></span></button>
+              </div>
+            </div>
+            <div class="review-panel">
+              <div class="card">
+                <div class="decision-head">
+                  <div><div class="eyebrow" id="reviewId">APPLICATION A-2026-184</div><h2 id="reviewTitle" style="margin:7px 0">Magdalena Nature Recovery</h2><p id="reviewApplicant" style="margin:0;color:var(--cp-text-muted);font-size:12px">Fundación Río Vivo · COP 82B requested · Bolívar, Magdalena and Cesar</p><span class="decision-label" id="decisionLabel">Recommend: return for revision</span></div>
+                  <div class="decision-score"><strong id="integrityScore">38</strong><small>integrity score</small></div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-head"><div><div class="card-title">Automated integrity screening</div><div class="card-sub">Risk signals support—not replace—government due diligence and legal review.</div></div><span class="source-tag">Azure AI + Fabric</span></div>
+                <div class="screening-grid" id="screeningGrid"></div>
+              </div>
+              <div class="card">
+                <div class="card-head"><div><div class="card-title">Potential financing and project overlaps</div><div class="card-sub">Semantic, geographic, budget-line and beneficiary matching across government and donor registers.</div></div><span class="source-tag synthetic">Synthetic matches</span></div>
+                <table class="match-table"><thead><tr><th>Matched record</th><th>Overlap detected</th><th>Confidence</th><th>Required action</th></tr></thead><tbody id="matchRows"></tbody></table>
+              </div>
+              <div class="card">
+                <div class="card-head"><div><div class="card-title">Applicant improvement plan</div><div class="card-sub">Specific changes that can move the submission toward approval.</div></div><button class="button" id="copyRecommendations">Copy guidance</button></div>
+                <div class="recommendations" id="recommendations"></div>
+              </div>
+              <div class="card">
+                <div class="card-head"><div><div class="card-title">Human decision checkpoint</div><div class="card-sub">AI cannot approve, reject or accuse an applicant of fraud.</div></div><span class="source-tag">Human accountable</span></div>
+                <div class="decision-actions">
+                  <button class="button primary" data-decision="Conditional approval recorded">Conditional approval</button>
+                  <button class="button" data-decision="Revision request prepared">Request revision</button>
+                  <button class="button" data-decision="Enhanced due diligence referral prepared">Refer for enhanced due diligence</button>
+                </div>
+                <div class="audit-trail" id="auditTrail" style="margin-top:12px">SYSTEM · Screening completed · Decision pending · Evidence package hash: COL-DEMO-8F31A2</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="page" id="synergy">
+          <div class="hero">
+            <div><div class="eyebrow">Portfolio intelligence</div><h1>Test investment synergies</h1><p>Adjust mission priorities and let the portfolio agent identify shared infrastructure, combined outcomes and financing complementarities.</p></div>
+            <button class="button primary" id="runSynergy">Run analysis</button>
+          </div>
+          <div class="matrix">
+            <div class="card controls">
+              <div class="card-title">Mission weights</div>
+              <div class="control"><label><span>Water security</span><span id="waterValue">85%</span></label><input id="waterRange" type="range" min="0" max="100" value="85"></div>
+              <div class="control"><label><span>Biodiversity</span><span id="natureValue">78%</span></label><input id="natureRange" type="range" min="0" max="100" value="78"></div>
+              <div class="control"><label><span>Inclusive livelihoods</span><span id="jobsValue">66%</span></label><input id="jobsRange" type="range" min="0" max="100" value="66"></div>
+              <div class="control"><label><span>Climate adaptation</span><span id="climateValue">90%</span></label><input id="climateRange" type="range" min="0" max="100" value="90"></div>
+              <div class="signal"><span class="signal-dot"></span><div class="signal-text"><strong id="synergyValue">$30M potential efficiency</strong>Across shared data, procurement and nature-based infrastructure.</div></div>
+            </div>
+            <div class="card">
+              <div class="card-head"><div><div class="card-title">Investment relationship network</div><div class="card-sub">Projects connect through reusable capabilities, shared outcomes and detected conflicts. Select a node to inspect it.</div></div><span class="source-tag synthetic">Synthetic model</span></div>
+              <div class="network-stage" id="synergyNetwork"></div>
+              <div class="network-legend"><span><i class="legend-line"></i>Shared enabler</span><span><i class="legend-line outcome"></i>Outcome contribution</span><span><i class="legend-line conflict"></i>Conflict / dependency</span><span>Line width = modeled strength</span></div>
+              <div class="network-insight" id="networkInsight"><strong>Recommended bundle:</strong> Magdalena Basin + Cauca Corridor share watershed evidence, community verification and catalytic capital infrastructure.</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="page" id="agents">
+          <div class="hero">
+            <div><div class="eyebrow">Azure AI advisory</div><h1>Multi-agent investment copilot</h1><p>Agents support advisory, coordination, definitions, auditing and reporting—with a human decision-maker retained at every material step.</p></div>
+            <span class="source-tag">Grounded in customer discovery</span>
+          </div>
+          <div class="agent-layout">
+            <div class="card chat">
+              <div class="messages" id="messages">
+                <div class="message ai"><strong>Portfolio agent</strong><br>I found a high-confidence synergy between the Magdalena resilience bond and the Cauca landscape facility. Both require hydrological baselines, community benefit verification and long-term maintenance contracts. Bundling these enablers could reduce modeled preparation cost by 18% <em>(synthetic estimate)</em>.</div>
+                <div class="message user">What would make this portfolio more investable?</div>
+                <div class="message ai"><strong>Investment advisor</strong><br>Three priorities: standardize outcome definitions across funders, fund the upstream project-preparation facility, and separate revenue-generating assets from public-good interventions while preserving one mission-level results framework.</div>
+              </div>
+              <div class="chat-input"><input id="agentInput" placeholder="Ask about risk, financing, synergies or compliance…" /><button class="button primary" id="sendAgent">Ask agents</button></div>
+            </div>
+            <div class="card">
+              <div class="card-head"><div><div class="card-title">How each agent works</div><div class="card-sub">Built with Azure AI Foundry Agent Service; every output carries sources, confidence and human-review requirements.</div></div></div>
+              <div class="agent-card"><span class="status">● Active</span><strong>Mission planner</strong><p>Turns policy outcomes into coordinated interventions rather than isolated projects.</p><div class="agent-flow"><div class="agent-step"><b>Inputs</b>Plans, GIS layers, outcome targets</div><div class="agent-step"><b>Process</b>Maps needs, dependencies and sequencing</div><div class="agent-step"><b>Outputs</b>Portfolio logic and intervention gaps</div><div class="agent-step"><b>Guardrail</b>No policy decision or prioritization without officials</div></div></div>
+              <div class="agent-card"><span class="status">● Active</span><strong>Investment advisor</strong><p>Tests whether the project can support an appropriate public, donor and private capital structure.</p><div class="agent-flow"><div class="agent-step"><b>Inputs</b>CAPEX, revenues, grants, risk allocation</div><div class="agent-step"><b>Process</b>Calculates transparent proxy metrics and scenarios</div><div class="agent-step"><b>Outputs</b>Capital stack, gaps and financing options</div><div class="agent-step"><b>Guardrail</b>Not investment advice; appraisal remains required</div></div></div>
+              <div class="agent-card"><span class="status">● Active</span><strong>Synergy analyst</strong><p>Finds reusable capabilities, duplicate costs, conflicts and portfolio-level financing opportunities.</p><div class="agent-flow"><div class="agent-step"><b>Inputs</b>Budgets, locations, beneficiaries, outcomes</div><div class="agent-step"><b>Process</b>Semantic, GIS and financial relationship matching</div><div class="agent-step"><b>Outputs</b>Network links, conflicts and bundling options</div><div class="agent-step"><b>Guardrail</b>Similarity is a review signal, not proof of duplication</div></div></div>
+              <div class="agent-card"><span class="status">● Active</span><strong>Integrity & compliance guardian</strong><p>Supports fraud-risk triage, donor reconciliation, partner checks, definitions, audit and reporting.</p><div class="agent-flow"><div class="agent-step"><b>Inputs</b>Registries, awards, ownership, documents</div><div class="agent-step"><b>Process</b>Entity resolution, anomaly and evidence checks</div><div class="agent-step"><b>Outputs</b>Risk flags, confidence and required evidence</div><div class="agent-step"><b>Guardrail</b>Cannot accuse, reject or approve; human due diligence</div></div></div>
+              <div class="agent-card"><span class="status">● Active</span><strong>Applicant coach</strong><p>Converts identified gaps into a specific, traceable submission improvement plan.</p><div class="agent-flow"><div class="agent-step"><b>Inputs</b>Screening findings and program rules</div><div class="agent-step"><b>Process</b>Links each gap to evidence and eligibility needs</div><div class="agent-step"><b>Outputs</b>Prioritized remediation checklist</div><div class="agent-step"><b>Guardrail</b>Does not guarantee eligibility or approval</div></div></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="page" id="architecture">
+          <div class="hero">
+            <div><div class="eyebrow">Reference architecture</div><h1>Microsoft technology, end to end</h1><p>A secure, governable path from fragmented source data to collaborative portfolio decisions and investor-grade reporting.</p></div>
+            <span class="source-tag">Concept architecture</span>
+          </div>
+          <div class="card architecture">
+            <div class="layer"><div class="layer-title">Experience & collaboration</div><div class="layer-items"><span class="tech">Power Apps</span><span class="tech">Microsoft Teams</span><span class="tech">Power BI Embedded</span><span class="tech">Copilot Studio</span></div></div>
+            <div class="layer"><div class="layer-title">Agentic intelligence</div><div class="layer-items"><span class="tech">Azure AI Foundry</span><span class="tech">Azure AI Agent Service</span><span class="tech">Azure OpenAI</span><span class="tech">Azure AI Search</span><span class="tech">Content Safety</span></div></div>
+            <div class="layer"><div class="layer-title">Portfolio data foundation</div><div class="layer-items"><span class="tech">Microsoft Fabric</span><span class="tech">OneLake</span><span class="tech">Dataverse</span><span class="tech">Azure Maps</span><span class="tech">Azure Digital Twins</span></div></div>
+            <div class="layer"><div class="layer-title">Governance, trust & integration</div><div class="layer-items"><span class="tech">Microsoft Purview</span><span class="tech">Microsoft Entra ID</span><span class="tech">Azure API Management</span><span class="tech">Azure Key Vault</span><span class="tech">Power Automate</span></div></div>
+            <div class="layer"><div class="layer-title">External ecosystems</div><div class="layer-items"><span class="tech">Government open data</span><span class="tech">Development banks</span><span class="tech">Satellite & IoT</span><span class="tech">Investor systems</span><span class="tech">Community evidence</span></div></div>
+          </div>
+        </section>
+
+        <section class="page" id="sources">
+          <div class="hero">
+            <div><div class="eyebrow">Trust by design</div><h1>Data & provenance register</h1><p>Every metric is labeled by origin so decision-makers can distinguish authoritative public evidence, customer-provided logic and illustrative prototype data.</p></div>
+          </div>
+          <div class="card">
+            <table class="provenance-table">
+              <thead><tr><th>Dataset / insight</th><th>Type</th><th>Used for</th><th>As of</th></tr></thead>
+              <tbody>
+                <tr><td><a href="https://altamira-regen.com/" target="_blank">ALTAMIRA public website</a></td><td><span class="source-tag public">Public</span></td><td>Mission, positioning and regenerative-investment framing</td><td>Sep 2026</td></tr>
+                <tr><td>Customer discovery: Sep 3 conversation and follow-up</td><td><span class="source-tag">Private grounding</span></td><td>Agent roles, advisory/coordination, compliance, definitions, audit and reporting</td><td>Sep 2026</td></tr>
+                <tr><td>Stockholm World Water Week presentation excerpt</td><td><span class="source-tag">Customer-provided</span></td><td>Understand → plan → finance; place-based portfolio logic; governance and trust</td><td>Aug 2026</td></tr>
+                <tr><td><a href="https://ourworldindata.org/grapher/forest-area-as-share-of-land-area" target="_blank">Forest area share · OWID / World Bank</a></td><td><span class="source-tag public">Public</span></td><td>Colombia context metric and trend</td><td>2025</td></tr>
+                <tr><td><a href="https://api.worldbank.org/v2/country/COL/indicator/ER.H2O.FWTL.ZS?format=json" target="_blank">Freshwater withdrawal · World Bank</a></td><td><span class="source-tag public">Public</span></td><td>Colombia water context metric</td><td>2022</td></tr>
+                <tr><td><a href="https://www.naturalearthdata.com/" target="_blank">Colombia geographic outline · Natural Earth</a></td><td><span class="source-tag public">Public domain</span></td><td>Accurate national coastline and border geometry used in portfolio map</td><td>Current dataset</td></tr>
+                <tr><td><a href="https://projects.worldbank.org/en/projects-operations/project-detail/P181080" target="_blank">Green and Resilient Development Financing II · World Bank</a></td><td><span class="source-tag public">Verified financing</span></td><td>US$750M national policy-financing precedent; not earmarked to a demo project</td><td>2024</td></tr>
+                <tr><td><a href="https://bogota.gov.co/mi-ciudad/ambiente/acuerdo-acueducto-bogota-y-car-asegura-763-billones-para-ptar-canoas" target="_blank">PTAR Canoas funding agreement · Bogotá</a></td><td><span class="source-tag public">Verified financing</span></td><td>COP 7.63T multi-agency wastewater financing precedent</td><td>2025</td></tr>
+                <tr><td><a href="https://www.iadb.org/en/project/CO-G1040" target="_blank">Payments for Environmental Services · IDB</a></td><td><span class="source-tag public">Verified financing</span></td><td>US$2.64M implementation program relevant to productive landscapes</td><td>2022–</td></tr>
+                <tr><td><a href="https://projects.worldbank.org/en/projects-operations/project-detail/P171227" target="_blank">Heart of the Colombian Amazon · World Bank/GEF</a></td><td><span class="source-tag public">Verified financing</span></td><td>US$18.37M additional grant precedent for forest and livelihood activities</td><td>2021–</td></tr>
+                <tr><td>Company investment and capability declarations</td><td><span class="source-tag public">Official company sources</span></td><td>Bavaria, Veolia, ACCIONA, Bancolombia, NKG and Terrasos partner screening</td><td>2019–2026</td></tr>
+                <tr><td>Projects, budgets, scores, outcomes and synergy estimates</td><td><span class="source-tag synthetic">Synthetic</span></td><td>Interactive demonstration only; not investment advice</td><td>Demo</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <div class="modal" id="projectModal">
+    <div class="modal-card">
+      <div class="card-head"><div><div class="eyebrow">Mission cluster</div><h2 id="modalTitle">Magdalena Basin Resilience</h2></div><button class="button" id="closeModal">Close</button></div>
+      <p id="modalCopy">A coordinated portfolio combining floodplain restoration, municipal resilience infrastructure, early-warning data and livelihood transition support.</p>
+      <div class="grid detail-grid">
+        <div class="detail"><small>Portfolio value</small><strong id="modalValue">$146M</strong></div>
+        <div class="detail"><small>Readiness</small><strong id="modalReady">78 / 100</strong></div>
+        <div class="detail"><small>Capital leverage</small><strong id="modalLeverage">3.1×</strong></div>
+      </div>
+      <div class="finance-title">Illustrative financing stack <span class="source-tag synthetic">Synthetic allocation</span></div>
+      <div class="finance-stack" id="financeStack"></div>
+      <div class="finance-title">Verified financing precedents & prospective partners</div>
+      <div class="evidence-grid" id="financeEvidence"></div>
+      <div class="disclaimer">Illustrative opportunity only. Referenced programs and transactions demonstrate relevant financing capacity, policy alignment or partner experience. They do not constitute an award, earmark, mandate or commitment. All allocations and partner roles are synthetic and require eligibility review, appraisal, safeguards, due diligence and formal approval.</div>
+    </div>
+  </div>
+  <div class="toast" id="toast">Investor brief generated from the current portfolio view.</div>
+
+  <script>
+    const pages = document.querySelectorAll(".page");
+    const navButtons = document.querySelectorAll(".nav button");
+    navButtons.forEach(button => button.addEventListener("click", () => {
+      navButtons.forEach(item => item.classList.remove("active"));
+      pages.forEach(page => page.classList.remove("active"));
+      button.classList.add("active");
+      document.getElementById(button.dataset.page).classList.add("active");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }));
+
+    document.getElementById("themeBtn").addEventListener("click", () => {
+      const root = document.documentElement;
+      root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark";
+    });
+
+    const projects = {
+      magdalena: {
+        title: "Magdalena Basin Resilience", value: "$146M", ready: "78 / 100", leverage: "2.0×",
+        copy: "Restore floodplains, wetlands and riparian corridors; improve natural water retention, flood-risk intelligence and resilient local livelihoods through a coordinated basin portfolio.",
+        stack: [["Public adaptation capital", "$48M", "Subnational and sovereign resilience windows"], ["Concessional / donor", "$42M", "Preparation, safeguards and nature-based assets"], ["Private co-finance", "$44M", "Sustainability-linked corporate participation"], ["Outcome payments", "$12M", "Verified water, nature and resilience results"]],
+        evidence: [
+          ["Verified public / donor precedent", "World Bank Green and Resilient DPF II", "US$750M active national operation supporting adaptation, sustainable land use and climate finance. Not earmarked for Magdalena.", "https://projects.worldbank.org/en/projects-operations/project-detail/P181080", "View World Bank source"],
+          ["Prospective private partner", "Bavaria", "Potential watershed-stewardship co-financier based on its official miPáramo conservation, restoration and sustainable-production program in Colombia. No commitment implied.", "https://www.bavaria.co/agua", "View company declaration"]
+        ]
+      },
+      bogota: {
+        title: "Bogotá Circular Water", value: "$94M", ready: "64 / 100", leverage: "2.1×",
+        copy: "Develop tertiary treatment and reclaimed-water networks for industrial users, with digital quality controls, resource recovery and long-term performance and offtake contracts.",
+        stack: [["Local public capital", "$30M", "Enabling works and public-good components"], ["DFI / green finance", "$22M", "Sustainable bonds or concessional debt"], ["Private project finance", "$36M", "EPC, operations and industrial offtake"], ["Technical assistance", "$6M", "Preparation and transaction support"]],
+        evidence: [
+          ["Verified local funding", "Bogotá–CAR–EAAB–Cundinamarca PTAR Canoas", "COP 7.63T secured in 2025: CAR 46.59%, Bogotá 31.99%, EAAB 19.67%, Cundinamarca 1.75%. A precedent, not a demo allocation.", "https://bogota.gov.co/mi-ciudad/ambiente/acuerdo-acueducto-bogota-y-car-asegura-763-billones-para-ptar-canoas", "View Bogotá source"],
+          ["Prospective private partners", "Veolia / ACCIONA", "Potential developer, EPC or operator roles based on official Colombia water investments and construction disclosures, including Cúcuta and Bello. Neither is committed.", "https://www.veolia.com/en/our-media/press-releases/veolia-strengthens-leadership-latin-america-water-contract-cucuta-colombia", "View Veolia declaration"],
+          ["Verified DFI channel", "IDB Invest / IFC / BBVA Colombia", "US$100M sustainable-bond issuance announced in 2024; eligible categories include circular economy and sustainable construction.", "https://www.idbinvest.org/en/news-media/idb-invest-and-bbva-colombia-promote-sustainable-bonds-and-financing-msmes-colombian", "View IDB Invest source"],
+          ["Construction capability", "ACCIONA Bello WWTP", "Official project record reports 432,000 m³/day treatment capacity serving more than 3.8M people, demonstrating relevant delivery capability.", "https://www.acciona.com/projects/wwtp-bello", "View ACCIONA project"]
+        ]
+      },
+      cauca: {
+        title: "Cauca Regenerative Corridor", value: "$112M", ready: "71 / 100", leverage: "3.3×",
+        copy: "Connect agroforestry, regenerative coffee and livestock systems with riparian restoration, producer finance, traceability and payments for verified ecosystem outcomes.",
+        stack: [["National public capital", "$26M", "Restoration and productive transformation"], ["IDB / donor support", "$16M", "Environmental-service payments and TA"], ["Private debt & offtake", "$54M", "Producer lending, working capital and buyers"], ["Outcome finance", "$16M", "Water, biodiversity and carbon results"]],
+        evidence: [
+          ["Verified national source", "Fondo para la Vida y la Biodiversidad", "Colombian fund operating since 2023 for restoration, water-centered planning, productive transformation and environmental-service payments.", "https://www.minambiente.gov.co/el-fondo-para-la-vida-y-la-biodiversidad-inicia-oficialmente-su-operacion/", "View MinAmbiente source"],
+          ["Verified donor source", "IDB CO-G1040", "US$2.64M environmental-services payment program in implementation, aligned to conservation and sustainable rural development. No Cauca award stated.", "https://www.iadb.org/en/project/CO-G1040", "View IDB source"],
+          ["Prospective financing partner", "Bancolombia", "Potential transition lender based on its disclosed US$3M sustainable financing for regenerative silvopastoral systems in Colombia. No Cauca commitment.", "https://prensa.bancolombia.com/noticias/responsabilidad-social-ambiental/proyecto-regenera-ganaderia-sostenible-orinoquia", "View company declaration"],
+          ["Prospective offtake partner", "Neumann Kaffee Gruppe", "Potential coffee offtake, farmer finance and technical-services partner based on NKG BLOOM's Colombia presence and US$25M revolving smallholder facility.", "https://www.nkg.net/nkg-bloom-coffee-sourcing-with-a-purpose/", "View NKG declaration"]
+        ]
+      },
+      amazon: {
+        title: "Amazon Bioeconomy Gateway", value: "$76M", ready: "52 / 100", leverage: "4.4×",
+        copy: "Build community and Indigenous-led forest value chains covering non-timber products, native seeds, restoration, processing, traceability and biodiversity and carbon monitoring.",
+        stack: [["Public enabling capital", "$14M", "Governance and enabling infrastructure"], ["Donor / grant capital", "$24M", "Conservation, restoration and livelihoods"], ["Patient private capital", "$25M", "Processing, working capital and market access"], ["Biodiversity outcomes", "$13M", "Habitat, carbon and conservation payments"]],
+        evidence: [
+          ["Verified donor precedent", "World Bank / GEF Heart of the Amazon", "US$18.37M additional grant supporting protected areas, restoration, livelihoods and forest-product value chains. Not automatically available to Putumayo.", "https://projects.worldbank.org/en/projects-operations/project-detail/P171227", "View World Bank source"],
+          ["Verified donor precedent", "IDB Yaguará II CO-G1046", "US$3.5M investment grant in implementation for Amazon restoration, Indigenous governance and bioeconomy activities.", "https://www.iadb.org/en/project/CO-G1046", "View IDB source"],
+          ["Prospective private partner", "Terrasos", "Potential biodiversity-finance and outcomes partner based on its role scaling Colombia's habitat-bank model. No Putumayo involvement or commitment is established.", "https://www.iadb.org/en/project/CO-T1638", "View IDB evidence"],
+          ["Prospective implementation partner", "Amazonía Emprende", "Potential native-seed, nursery and restoration supply-chain partner based on the IDB-backed Caquetá Native Seed Bank project.", "https://www.iadb.org/en/project/CO-T1736", "View IDB project"]
+        ]
+      }
+    };
+    const modal = document.getElementById("projectModal");
+    function selectProject(id, open = false) {
+      document.querySelectorAll(".pin,.project").forEach(item => item.classList.toggle("active", item.dataset.id === id));
+      const data = projects[id];
+      document.getElementById("modalTitle").textContent = data.title;
+      document.getElementById("modalValue").textContent = data.value;
+      document.getElementById("modalReady").textContent = data.ready;
+      document.getElementById("modalLeverage").textContent = data.leverage;
+      document.getElementById("modalCopy").textContent = data.copy;
+      document.getElementById("financeStack").innerHTML = data.stack.map(item =>
+        `<div class="finance-item"><small>${item[0]}</small><strong>${item[1]}</strong><small>${item[2]}</small></div>`
+      ).join("");
+      document.getElementById("financeEvidence").innerHTML = data.evidence.map(item =>
+        `<div class="evidence"><div class="evidence-label">${item[0]}</div><strong>${item[1]}</strong><p>${item[2]}</p><a href="${item[3]}" target="_blank" rel="noopener">${item[4]} ↗</a></div>`
+      ).join("");
+      if (open) modal.classList.add("open");
+    }
+    document.querySelectorAll(".pin").forEach(item => item.addEventListener("click", () => selectProject(item.dataset.id, true)));
+    document.querySelectorAll(".project").forEach(item => item.addEventListener("click", () => selectProject(item.dataset.id, true)));
+    selectProject("magdalena");
+    document.getElementById("closeModal").addEventListener("click", () => modal.classList.remove("open"));
+    modal.addEventListener("click", event => { if (event.target === modal) modal.classList.remove("open"); });
+
+    document.querySelectorAll("[data-filter]").forEach(button => button.addEventListener("click", () => {
+      document.querySelectorAll("[data-filter]").forEach(item => item.classList.remove("active"));
+      button.classList.add("active");
+      document.querySelectorAll(".deal").forEach(deal => {
+        deal.style.display = button.dataset.filter === "all" || deal.dataset.tag === button.dataset.filter ? "block" : "none";
+      });
+    }));
+
+    const financeModels = {
+      magdalena: { type: "Adaptation portfolio", capex: 146, publicCapital: 48, baseNpv: 18.0, revenue: 13.8, opex: 5.9, debtService: 4.1 },
+      bogota: { type: "Circular water infrastructure", capex: 94, publicCapital: 30, baseNpv: 24.0, revenue: 15.2, opex: 6.2, debtService: 4.8 },
+      cauca: { type: "Productive landscape facility", capex: 112, publicCapital: 26, baseNpv: 16.0, revenue: 12.6, opex: 5.1, debtService: 3.9 },
+      amazon: { type: "Bioeconomy platform", capex: 76, publicCapital: 14, baseNpv: 7.0, revenue: 8.1, opex: 3.8, debtService: 2.7 }
+    };
+    let activeFinanceProject = "magdalena";
+    const amountFromLabel = value => Number(value.replace(/[^0-9.]/g, ""));
+    const money = value => `${value < 0 ? "−" : ""}$${Math.abs(value).toFixed(1)}M`;
+
+    function updateScenario() {
+      const model = financeModels[activeFinanceProject];
+      const revenueRealization = Number(document.getElementById("revenueScenario").value) / 100;
+      const capexVariance = Number(document.getElementById("capexScenario").value) / 100;
+      const delayYears = Number(document.getElementById("delayScenario").value) / 12;
+      const adjustedNpv = model.baseNpv + model.revenue * 5.65 * (revenueRealization - 1) - model.capex * capexVariance - (model.revenue - model.opex) * delayYears;
+      const adjustedDscr = (model.revenue * revenueRealization - model.opex) / model.debtService;
+      document.getElementById("revenueScenarioValue").textContent = Math.round(revenueRealization * 100) + "%";
+      document.getElementById("capexScenarioValue").textContent = Math.round(capexVariance * 100) + "%";
+      document.getElementById("delayScenarioValue").textContent = Math.round(delayYears * 12) + " months";
+      document.getElementById("adjustedNpv").textContent = money(adjustedNpv);
+      document.getElementById("adjustedDscr").textContent = adjustedDscr.toFixed(2) + "×";
+      const signal = adjustedNpv > 0 && adjustedDscr >= 1.3 ? "Viable" : adjustedNpv > 0 && adjustedDscr >= 1 ? "Caution" : "Restructure";
+      const signalElement = document.getElementById("scenarioSignal");
+      signalElement.textContent = signal;
+      signalElement.className = signal === "Viable" ? "up" : signal === "Caution" ? "risk-medium" : "down";
+    }
+
+    function renderFinancials(key) {
+      activeFinanceProject = key;
+      const project = projects[key];
+      const model = financeModels[key];
+      const leverage = (model.capex - model.publicCapital) / model.publicCapital;
+      const baseDscr = (model.revenue - model.opex) / model.debtService;
+      document.querySelectorAll(".finance-choice").forEach(item => item.classList.toggle("active", item.dataset.finance === key));
+      document.getElementById("financeProjectType").textContent = model.type.toUpperCase();
+      document.getElementById("financeProjectTitle").textContent = project.title;
+      document.getElementById("financeProjectDesc").textContent = project.copy;
+      document.getElementById("financeCapex").textContent = "$" + model.capex + "M";
+      document.getElementById("financeLeverage").textContent = leverage.toFixed(1) + "×";
+      document.getElementById("financeNpv").textContent = money(model.baseNpv);
+      document.getElementById("financeDscr").textContent = baseDscr.toFixed(2) + "×";
+      const amounts = project.stack.map(item => amountFromLabel(item[1]));
+      document.getElementById("capitalBar").innerHTML = amounts.map(amount =>
+        `<div class="capital-segment" style="width:${amount / model.capex * 100}%"></div>`
+      ).join("");
+      document.getElementById("capitalLegend").innerHTML = project.stack.map(item =>
+        `<div><strong>${item[0]} · ${item[1]}</strong>${item[2]}</div>`
+      ).join("");
+      const operatingLines = [
+        ["Revenue / outcome receipts", model.revenue * .45, model.revenue * .8, model.revenue],
+        ["Operating expenditure", model.opex * .7, model.opex * .9, model.opex],
+        ["Operating cash flow", model.revenue * .45 - model.opex * .7, model.revenue * .8 - model.opex * .9, model.revenue - model.opex],
+        ["Debt service", model.debtService * .5, model.debtService, model.debtService]
+      ];
+      document.getElementById("cashflowRows").innerHTML = operatingLines.map(line =>
+        `<tr><td>${line[0]}</td><td>${money(line[1])}</td><td>${money(line[2])}</td><td>${money(line[3])}</td></tr>`
+      ).join("");
+      document.getElementById("financialEvidence").innerHTML = project.evidence.map(item =>
+        `<div class="evidence"><div class="evidence-label">${item[0]}</div><strong>${item[1]}</strong><p>${item[2]}</p><a href="${item[3]}" target="_blank" rel="noopener">${item[4]} ↗</a></div>`
+      ).join("");
+      document.getElementById("revenueScenario").value = 100;
+      document.getElementById("capexScenario").value = 0;
+      document.getElementById("delayScenario").value = 0;
+      updateScenario();
+    }
+    document.querySelectorAll(".finance-choice").forEach(item => item.addEventListener("click", () => renderFinancials(item.dataset.finance)));
+    ["revenueScenario", "capexScenario", "delayScenario"].forEach(id => document.getElementById(id).addEventListener("input", updateScenario));
+    document.getElementById("resetScenario").addEventListener("click", () => renderFinancials(activeFinanceProject));
+    renderFinancials("magdalena");
+
+    const applicationReviews = {
+      "magdalena-fund": {
+        id: "A-2026-184", title: "Magdalena Nature Recovery", applicant: "Fundación Río Vivo · COP 82B requested · Bolívar, Magdalena and Cesar", score: 38, decision: "Recommend: return for revision",
+        checks: [
+          ["!", "Identity and ownership", "High", "Two directors share contact details with a recently incorporated subcontractor; beneficial ownership evidence is incomplete."],
+          ["!", "Duplicate financing", "High", "COP 18.6B in restoration and monitoring lines substantially match a prior donor concept note."],
+          ["!", "Project overlap", "Medium", "Intervention polygons overlap a departmental wetland program without a coordination agreement."],
+          ["✓", "Technical feasibility", "Low", "Restoration methodology is plausible, but unit costs require independent benchmarking."],
+          ["!", "Private partner risk", "High", "Proposed contractor has limited delivery history and an unresolved ownership disclosure gap."],
+          ["!", "Evidence integrity", "Medium", "Three beneficiary letters have identical metadata and wording; authenticity requires confirmation."]
+        ],
+        matches: [
+          ["World Bank-supported resilience activity · synthetic registry record", "Same municipalities, monitoring equipment and wetland hectares", "92%", "Provide budget reconciliation and confirm no double claim"],
+          ["Bolívar departmental restoration program · synthetic record", "31% geographic overlap", "84%", "Submit coordination letter and unified intervention map"],
+          ["International climate donor concept · synthetic record", "Near-identical results framework and consultant costs", "88%", "Disclose relationship and separate eligible expenditures"]
+        ],
+        recommendations: [
+          ["Disclose and verify ownership", "Submit certified beneficial ownership, related-party declarations and procurement conflict-of-interest forms for the applicant and every delivery partner."],
+          ["Reconcile every funding source", "Provide a single sources-and-uses table with donor, national, departmental and private financing mapped to non-overlapping budget lines."],
+          ["Resolve geographic duplication", "Upload GIS intervention polygons and a signed coordination protocol with the departmental wetland program."],
+          ["Strengthen cost evidence", "Add independent unit-cost benchmarks, procurement assumptions and contingency logic for restoration and monitoring packages."]
+        ]
+      },
+      "bogota-reuse": {
+        id: "A-2026-203", title: "Bogotá Industrial Reuse", applicant: "Consorcio Agua Circular · COP 146B requested · Bogotá and Soacha", score: 67, decision: "Recommend: conditional approval after clarification",
+        checks: [
+          ["✓", "Identity and ownership", "Low", "Consortium ownership and tax records are consistent across submitted documents."],
+          ["!", "Duplicate financing", "Medium", "A trunk-pipeline package may intersect expenditure planned under a municipal wastewater program."],
+          ["!", "Project conflict", "Medium", "Demand forecast assumes industrial offtake also claimed by another reuse proposal."],
+          ["✓", "Technical feasibility", "Low", "Technology and delivery plan align with comparable Colombian wastewater projects."],
+          ["!", "Private partner risk", "Medium", "EPC guarantee is conditional and the operator performance bond is not yet evidenced."],
+          ["✓", "Evidence integrity", "Low", "Core permits and studies are traceable; two annexes need current signatures."]
+        ],
+        matches: [
+          ["Greater Bogotá wastewater program · synthetic registry record", "Shared trunk route and pumping station scope", "81%", "Clarify asset boundaries and cost ownership"],
+          ["Industrial reuse application A-2026-119 · synthetic", "Five of eight anchor offtakers overlap", "76%", "Provide signed exclusivity or shared-demand allocation"],
+          ["IDB Invest sustainable finance category", "Potential eligibility alignment; not committed financing", "64%", "Document taxonomy and credit eligibility separately"]
+        ],
+        recommendations: [
+          ["Clarify interfaces with public infrastructure", "Submit an asset-boundary diagram separating applicant-financed works from existing and planned public wastewater assets."],
+          ["Evidence market demand", "Replace expressions of interest with binding or staged offtake agreements and remove duplicate demand claims."],
+          ["Complete performance security", "Provide parent guarantees, operator performance bond terms and step-in rights before financial close."],
+          ["Add affordability safeguards", "Explain tariff effects, industrial pricing and how public subsidy is prevented from cross-subsidizing private-only benefits."]
+        ]
+      },
+      "cauca-corridor": {
+        id: "A-2026-221", title: "Cauca Productive Corridor", applicant: "Alianza Campo Vivo · COP 61B requested · Cauca and Valle del Cauca", score: 84, decision: "Recommend: proceed to technical appraisal",
+        checks: [
+          ["✓", "Identity and ownership", "Low", "Applicant and cooperative members pass registration and ownership consistency checks."],
+          ["✓", "Duplicate financing", "Low", "Declared grants and credit lines are mapped to distinct activities."],
+          ["!", "Project overlap", "Medium", "Some producer groups also participate in a national extension-services program."],
+          ["✓", "Technical feasibility", "Low", "Phasing, agronomy and traceability design are proportionate to the proposed scale."],
+          ["✓", "Private partner risk", "Low", "Proposed lender and buyer have documented Colombia operations; commitments remain conditional."],
+          ["✓", "Evidence integrity", "Low", "Sampled farmer records, land-use evidence and budgets are internally consistent."]
+        ],
+        matches: [
+          ["National rural extension program · synthetic record", "412 producers receive partially similar technical assistance", "72%", "Remove duplicate extension cost or document incremental service"],
+          ["IDB environmental-services program", "Complementary outcome-payment logic; no duplicate award found", "58%", "Seek formal eligibility confirmation"],
+          ["Regional watershed plan · synthetic record", "Shared riparian restoration targets", "55%", "Align indicators and monitoring protocol"]
+        ],
+        recommendations: [
+          ["Separate incremental services", "Show which advisory services go beyond the national extension program and remove any duplicated per-producer cost."],
+          ["Formalize private participation", "Convert lender and buyer interest into term sheets with pricing, eligibility and performance conditions."],
+          ["Protect small producers", "Add grievance, data-consent and benefit-sharing provisions to traceability and outcome-payment agreements."],
+          ["Define outcome verification", "Specify baselines, sampling, audit frequency and remedies for biodiversity and water-performance claims."]
+        ]
+      },
+      "amazon-hubs": {
+        id: "A-2026-238", title: "Amazon Bioeconomy Hubs", applicant: "BioSelva Colombia SAS · COP 97B requested · Putumayo", score: 44, decision: "Recommend: enhanced due diligence",
+        checks: [
+          ["!", "Identity and ownership", "High", "A foreign holding company appears in the ownership chain without complete controlling-person documentation."],
+          ["!", "Duplicate financing", "High", "Native-seed and nursery equipment resembles an existing donor-financed package."],
+          ["!", "Project conflict", "High", "Proposed collection zones intersect community-use areas without documented consent."],
+          ["✓", "Technical feasibility", "Medium", "Processing model is feasible, but feedstock volumes and transport assumptions are optimistic."],
+          ["!", "Private partner risk", "High", "Offtake counterparty is newly formed and provides no audited financial statements."],
+          ["!", "Evidence integrity", "Medium", "Community support documents do not demonstrate free, prior and informed consent."]
+        ],
+        matches: [
+          ["Amazon native seed initiative · synthetic registry record", "Nursery equipment, seed-bank scope and two implementation sites", "89%", "Reconcile assets and exclude already financed equipment"],
+          ["Indigenous territorial plan · synthetic record", "Collection area intersects community governance zone", "86%", "Obtain documented consent and co-governance agreement"],
+          ["International forest donor application · synthetic record", "Same processing center and beneficiary associations", "79%", "Disclose application status and ring-fence expenditures"]
+        ],
+        recommendations: [
+          ["Complete enhanced ownership review", "Provide the full corporate ownership tree, controlling persons, sanctions screening consent and audited group accounts."],
+          ["Demonstrate community consent", "Submit independently witnessed consultation records, benefit-sharing terms and community governance roles."],
+          ["Eliminate duplicate equipment", "Create an asset register cross-referenced to every public and donor award and revise the capital budget."],
+          ["De-risk market assumptions", "Provide independently validated feedstock studies, credible offtake security and downside-case cash flows."]
+        ]
+      }
+    };
+
+    function renderReview(key) {
+      const review = applicationReviews[key];
+      document.querySelectorAll(".review-item").forEach(item => item.classList.toggle("active", item.dataset.review === key));
+      document.getElementById("reviewId").textContent = "APPLICATION " + review.id;
+      document.getElementById("reviewTitle").textContent = review.title;
+      document.getElementById("reviewApplicant").textContent = review.applicant;
+      document.getElementById("integrityScore").textContent = review.score;
+      document.getElementById("decisionLabel").textContent = review.decision;
+      document.getElementById("screeningGrid").innerHTML = review.checks.map(check => {
+        const levelClass = check[2] === "High" ? "risk-high" : check[2] === "Medium" ? "risk-medium" : "risk-low";
+        return `<div class="screening"><div class="screening-icon ${levelClass}">${check[0]}</div><div><strong>${check[1]} · <span class="${levelClass}">${check[2]}</span></strong><p>${check[3]}</p></div></div>`;
+      }).join("");
+      document.getElementById("matchRows").innerHTML = review.matches.map(match =>
+        `<tr><td>${match[0]}</td><td>${match[1]}</td><td class="confidence">${match[2]}</td><td>${match[3]}</td></tr>`
+      ).join("");
+      document.getElementById("recommendations").innerHTML = review.recommendations.map(item =>
+        `<div class="recommendation"><strong>${item[0]}</strong><span>${item[1]}</span></div>`
+      ).join("");
+      document.getElementById("auditTrail").textContent = `SYSTEM · ${review.id} screening completed · Human decision pending · Model output is advisory · Evidence package hash: COL-DEMO-${review.score}A7`;
+    }
+    document.querySelectorAll(".review-item").forEach(item => item.addEventListener("click", () => renderReview(item.dataset.review)));
+    renderReview("magdalena-fund");
+    document.getElementById("copyRecommendations").addEventListener("click", () => showToast("Applicant guidance copied to the synthetic case workspace."));
+    document.querySelectorAll("[data-decision]").forEach(button => button.addEventListener("click", () => {
+      document.getElementById("auditTrail").textContent += ` · HUMAN ACTION · ${button.dataset.decision}`;
+      showToast(button.dataset.decision + ". No real-world decision was submitted.");
+    }));
+
+    const rangeMap = [
+      ["waterRange", "waterValue"], ["natureRange", "natureValue"],
+      ["jobsRange", "jobsValue"], ["climateRange", "climateValue"]
+    ];
+    rangeMap.forEach(([rangeId, valueId]) => {
+      document.getElementById(rangeId).addEventListener("input", event => {
+        document.getElementById(valueId).textContent = event.target.value + "%";
+      });
+    });
+
+    const networkInsights = {
+      magdalena: "<strong>Magdalena Basin:</strong> strongest reuse opportunity is a shared hydrology and flood-risk evidence layer; conflict screening is needed against Bogotá water infrastructure demand.",
+      bogota: "<strong>Bogotá Circular Water:</strong> connects most strongly to shared data and investability; a dashed dependency flags possible competition for water-sector public capital.",
+      cauca: "<strong>Cauca Corridor:</strong> can share biodiversity standards, producer verification and outcome-payment infrastructure with the Amazon portfolio.",
+      amazon: "<strong>Amazon Gateway:</strong> depends on community verification and nature standards; patient capital should remain ring-fenced from municipal infrastructure finance.",
+      data: "<strong>Shared evidence layer:</strong> one Fabric and Azure Maps foundation can serve hydrology, GIS overlap, donor reconciliation and results reporting across all projects.",
+      nature: "<strong>Nature standards:</strong> common definitions for restoration, biodiversity and ecosystem-service claims reduce audit cost and conflicting outcome claims.",
+      capital: "<strong>Catalytic capital facility:</strong> pooled preparation funding can support safeguards, feasibility and transaction design without duplicating project-level grants.",
+      community: "<strong>Community verification:</strong> a shared consent, beneficiary and grievance framework improves integrity while reducing repeated engagement costs.",
+      outcomes: "<strong>Portfolio outcomes:</strong> coordinated investments create stronger water-security, resilience and investability results than isolated projects."
+    };
+    function renderSynergy(seed = 0) {
+      const weights = {
+        water: Number(document.getElementById("waterRange").value),
+        nature: Number(document.getElementById("natureRange").value),
+        jobs: Number(document.getElementById("jobsRange").value),
+        climate: Number(document.getElementById("climateRange").value)
+      };
+      const width = value => Math.max(2, Math.round(value / 18));
+      document.getElementById("synergyNetwork").innerHTML = `
+        <svg class="network-svg" viewBox="0 0 760 480" role="img" aria-label="Network of projects, shared enablers, outcomes and conflicts">
+          <path class="network-edge synergy" style="stroke-width:${width(weights.water)}" d="M120 85 C225 85 245 95 330 105"/>
+          <path class="network-edge synergy" style="stroke-width:${width(weights.water-12)}" d="M120 185 C220 180 250 120 330 105"/>
+          <path class="network-edge synergy" style="stroke-width:${width(weights.nature)}" d="M120 285 C220 280 250 210 330 215"/>
+          <path class="network-edge synergy" style="stroke-width:${width(weights.nature+8)}" d="M120 385 C230 385 245 225 330 215"/>
+          <path class="network-edge synergy" style="stroke-width:${width(weights.climate-10)}" d="M120 85 C245 115 255 310 330 325"/>
+          <path class="network-edge synergy" style="stroke-width:${width(weights.jobs)}" d="M120 285 C230 300 245 390 330 410"/>
+          <path class="network-edge synergy" style="stroke-width:${width(weights.jobs+10)}" d="M120 385 C230 390 260 415 330 410"/>
+          <path class="network-edge outcome" style="stroke-width:${width(weights.water)}" d="M430 105 C520 105 535 105 635 105"/>
+          <path class="network-edge outcome" style="stroke-width:${width(weights.nature)}" d="M430 215 C525 215 545 235 635 240"/>
+          <path class="network-edge outcome" style="stroke-width:${width(weights.climate)}" d="M430 325 C525 325 550 365 635 375"/>
+          <path class="network-edge outcome" style="stroke-width:${width(weights.jobs)}" d="M430 410 C525 410 550 380 635 375"/>
+          <path class="network-edge conflict" style="stroke-width:3" d="M118 185 C175 210 175 255 118 285"/>
+          <path class="network-edge conflict" style="stroke-width:2" d="M118 85 C175 120 175 350 118 385"/>
+          <g class="network-node" data-network="magdalena" transform="translate(85 85)"><circle r="34"/><text y="-2">Magdalena</text><text class="node-sub" y="13">resilience</text></g>
+          <g class="network-node" data-network="bogota" transform="translate(85 185)"><circle r="34"/><text y="-2">Bogotá</text><text class="node-sub" y="13">water reuse</text></g>
+          <g class="network-node" data-network="cauca" transform="translate(85 285)"><circle r="34"/><text y="-2">Cauca</text><text class="node-sub" y="13">landscape</text></g>
+          <g class="network-node" data-network="amazon" transform="translate(85 385)"><circle r="34"/><text y="-2">Amazon</text><text class="node-sub" y="13">bioeconomy</text></g>
+          <g class="network-node core" data-network="data" transform="translate(380 105)"><circle r="45"/><text y="-3">Shared data</text><text class="node-sub" y="13">GIS + evidence</text></g>
+          <g class="network-node core" data-network="nature" transform="translate(380 215)"><circle r="45"/><text y="-3">Nature</text><text class="node-sub" y="13">standards</text></g>
+          <g class="network-node core" data-network="capital" transform="translate(380 325)"><circle r="45"/><text y="-3">Catalytic</text><text class="node-sub" y="13">capital</text></g>
+          <g class="network-node core" data-network="community" transform="translate(380 410)"><circle r="45"/><text y="-3">Community</text><text class="node-sub" y="13">verification</text></g>
+          <g class="network-node outcome" data-network="outcomes" transform="translate(680 105)"><circle r="38"/><text y="-3">Water</text><text class="node-sub" y="13">security</text></g>
+          <g class="network-node outcome" data-network="outcomes" transform="translate(680 240)"><circle r="38"/><text y="-3">Nature</text><text class="node-sub" y="13">positive</text></g>
+          <g class="network-node outcome" data-network="outcomes" transform="translate(680 375)"><circle r="38"/><text y="-3">Resilient</text><text class="node-sub" y="13">investment</text></g>
+        </svg>`;
+      document.querySelectorAll("[data-network]").forEach(node => node.addEventListener("click", () => {
+        document.getElementById("networkInsight").innerHTML = networkInsights[node.dataset.network];
+      }));
+    }
+    renderSynergy();
+    document.getElementById("runSynergy").addEventListener("click", () => {
+      const score = rangeMap.reduce((sum, pair) => sum + Number(document.getElementById(pair[0]).value), 0);
+      const saving = Math.round(12 + score / 18);
+      document.getElementById("synergyValue").textContent = `$${saving}M potential efficiency`;
+      renderSynergy(score);
+      showToast("Synergy analysis refreshed with current mission weights.");
+    });
+
+    const agentResponses = [
+      "The strongest near-term action is to fund shared project preparation: baseline data, legal structuring and community engagement can serve multiple assets instead of being repeated project by project.",
+      "For private investors, separate cash-flow assets from public-good interventions, then connect both through one mission results framework and transparent dependency map.",
+      "The compliance agent found that biodiversity net-gain, livelihood benefit and resilience metrics need a common definition registry before automated reporting can be trusted.",
+      "A catalytic facility could cover upstream coordination costs and use milestone-based releases. This is aligned with the customer hypothesis; all financial figures shown here remain synthetic.",
+      "Integrity screening should reconcile applicant budgets against national and donor award registers, compare GIS polygons, verify beneficial ownership and flag—not conclude—potential fraud for qualified human investigators.",
+      "The applicant can improve approval readiness by submitting one consolidated sources-and-uses table, geospatial intervention files, beneficial ownership evidence, partner financial capacity and explicit declarations of every related application."
+    ];
+    document.getElementById("sendAgent").addEventListener("click", () => {
+      const input = document.getElementById("agentInput");
+      const text = input.value.trim();
+      if (!text) return;
+      const messages = document.getElementById("messages");
+      messages.insertAdjacentHTML("beforeend", `<div class="message user">${text.replace(/[<>]/g, "")}</div>`);
+      const response = agentResponses[Math.floor(Math.random() * agentResponses.length)];
+      setTimeout(() => {
+        messages.insertAdjacentHTML("beforeend", `<div class="message ai"><strong>ALTAMIRA agent team</strong><br>${response}</div>`);
+        messages.scrollTop = messages.scrollHeight;
+      }, 450);
+      input.value = "";
+    });
+    document.getElementById("agentInput").addEventListener("keydown", event => {
+      if (event.key === "Enter") document.getElementById("sendAgent").click();
+    });
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2600);
+    }
+    document.getElementById("briefBtn").addEventListener("click", () => showToast("Investor brief generated from the current portfolio view."));
+  </script>
+</body>
+</html>
