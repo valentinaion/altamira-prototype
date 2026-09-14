@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Altamira Regenerative Finance - Interactive Dashboard</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f5f5; color: #333; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        .header { background: white; padding: 20px; border-radius: 4px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .header h1 { color: #0078d4; font-size: 28px; margin-bottom: 8px; }
+        .header p { color: #666; font-size: 14px; }
+        .fidelity { background: #fff4e6; border-left: 4px solid #ff9800; padding: 12px 16px; margin-bottom: 16px; border-radius: 2px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 20px; }
+        .stat-card { background: white; padding: 16px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); text-align: center; }
+        .stat-value { font-size: 32px; font-weight: bold; color: #0078d4; margin: 8px 0; }
+        .stat-label { font-size: 12px; color: #666; text-transform: uppercase; }
+        .project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+        .project-card { background: white; padding: 16px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.2s; }
+        .project-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); transform: translateY(-2px); }
+        .project-title { font-weight: 600; color: #0078d4; font-size: 14px; margin-bottom: 8px; }
+        .project-row { font-size: 12px; margin: 6px 0; display: flex; justify-content: space-between; }
+        .project-label { color: #666; font-weight: 500; }
+        .project-value { color: #333; }
+        .status-active { color: #107c10; }
+        .status-diligence { color: #ff8c00; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 4px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        th { background: #f0f0f0; padding: 12px; text-align: left; font-weight: 600; font-size: 12px; border-bottom: 1px solid #ddd; }
+        td { padding: 12px; border-bottom: 1px solid #eee; font-size: 13px; }
+        tr:hover { background: #f9f9f9; }
+        .tab-buttons { display: flex; gap: 8px; margin-bottom: 20px; }
+        .tab-btn { padding: 8px 16px; background: #f0f0f0; border: none; border-radius: 4px; cursor: pointer; font-weight: 500; transition: all 0.2s; }
+        .tab-btn.active { background: #0078d4; color: white; }
+        .tab-btn:hover { background: #005a9e; color: white; }
+        .chart { background: white; padding: 16px; border-radius: 4px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .chart h3 { margin-bottom: 12px; font-size: 16px; color: #333; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        const projects = [
+            { id: 'CO-ANT-001', name: 'Cauca Valley Agroforestry', dept: 'Antioquia', type: 'Agroforestry', stage: 'Active', investment: 450000, carbon: 890, biodiversity: 78, water: 72, livelihoods: 81 },
+            { id: 'CO-ANT-002', name: 'Medellín Metro Restoration', dept: 'Antioquia', type: 'Watershed', stage: 'Diligence', investment: 680000, carbon: 520, biodiversity: 65, water: 68, livelihoods: 58 },
+            { id: 'CO-VDC-001', name: 'Regenerative Cattle Systems', dept: 'Valle del Cauca', type: 'Cattle', stage: 'Active', investment: 520000, carbon: 1240, biodiversity: 72, water: 75, livelihoods: 79 },
+            { id: 'CO-VDC-002', name: 'Mangrove Restoration – Buenaventura', dept: 'Valle del Cauca', type: 'Mangrove', stage: 'Discovery', investment: 750000, carbon: 2100, biodiversity: 84, water: 81, livelihoods: 62 },
+            { id: 'CO-CUN-001', name: 'Bogotá Savanna Biodiversity', dept: 'Cundinamarca', type: 'Watershed', stage: 'Diligence', investment: 420000, carbon: 380, biodiversity: 88, water: 71, livelihoods: 52 },
+            { id: 'CO-CUN-002', name: 'High-Altitude Coffee Regen', dept: 'Cundinamarca', type: 'Coffee', stage: 'Active', investment: 380000, carbon: 650, biodiversity: 76, water: 79, livelihoods: 84 },
+            { id: 'CO-META-001', name: 'Llanos Grassland Restoration', dept: 'Meta', type: 'Cattle', stage: 'Discovery', investment: 890000, carbon: 3200, biodiversity: 68, water: 65, livelihoods: 71 },
+            { id: 'CO-META-002', name: 'Orinoco Tributary Reforestation', dept: 'Meta', type: 'Watershed', stage: 'Active', investment: 620000, carbon: 1650, biodiversity: 79, water: 74, livelihoods: 65 },
+            { id: 'CO-BOL-001', name: 'Caribbean Mangrove Protection', dept: 'Bolívar', type: 'Mangrove', stage: 'Diligence', investment: 850000, carbon: 2650, biodiversity: 87, water: 83, livelihoods: 75 },
+            { id: 'CO-BOL-002', name: 'Cartagena Urban Forest', dept: 'Bolívar', type: 'Watershed', stage: 'Active', investment: 310000, carbon: 220, biodiversity: 61, water: 64, livelihoods: 68 },
+        ];
+
+        function App() {
+            const [tab, setTab] = React.useState('discover');
+            const [filter, setFilter] = React.useState('');
+
+            const filtered = projects.filter(p => 
+                p.name.toLowerCase().includes(filter.toLowerCase()) ||
+                p.dept.toLowerCase().includes(filter.toLowerCase())
+            );
+
+            const stats = {
+                total: filtered.length,
+                totalCarbon: filtered.reduce((s, p) => s + p.carbon, 0),
+                avgBio: Math.round(filtered.reduce((s, p) => s + p.biodiversity, 0) / filtered.length || 0),
+                active: filtered.filter(p => p.stage === 'Active').length,
+                totalInvest: (filtered.reduce((s, p) => s + p.investment, 0) / 1000000).toFixed(1)
+            };
+
+            return (
+                <div className="container">
+                    <div className="header">
+                        <h1>🌿 Altamira Regenerative Finance Interactive Dashboard</h1>
+                        <p>Discover, evaluate, and track regenerative projects in Colombia</p>
+                    </div>
+
+                    <div className="fidelity">
+                        <strong>⚠️ DEMO DATA:</strong> All 10 projects, metrics, and data are 100% synthetic for demonstration only.
+                    </div>
+
+                    <div className="tab-buttons">
+                        <button className={`tab-btn ${tab === 'discover' ? 'active' : ''}`} onClick={() => setTab('discover')}>Discover Projects</button>
+                        <button className={`tab-btn ${tab === 'dashboard' ? 'active' : ''}`} onClick={() => setTab('dashboard')}>Dashboard</button>
+                        <button className={`tab-btn ${tab === 'tracking' ? 'active' : ''}`} onClick={() => setTab('tracking')}>Tracking</button>
+                    </div>
+
+                    {tab === 'discover' && (
+                        <div>
+                            <div style={{marginBottom: '16px'}}>
+                                <input 
+                                    type="text" 
+                                    placeholder="Search projects..." 
+                                    value={filter}
+                                    onChange={e => setFilter(e.target.value)}
+                                    style={{width: '100%', padding: '10px', fontSize: '14px', borderRadius: '4px', border: '1px solid #ddd'}}
+                                />
+                            </div>
+                            <p style={{marginBottom: '12px'}}>Showing <strong>{filtered.length}</strong> of {projects.length} projects</p>
+                            <div className="project-grid">
+                                {filtered.map(p => (
+                                    <div key={p.id} className="project-card">
+                                        <div className="project-title">{p.name}</div>
+                                        <div className="project-row">
+                                            <span className="project-label">Dept:</span>
+                                            <span className="project-value">{p.dept}</span>
+                                        </div>
+                                        <div className="project-row">
+                                            <span className="project-label">Type:</span>
+                                            <span className="project-value">{p.type}</span>
+                                        </div>
+                                        <div className="project-row">
+                                            <span className="project-label">Stage:</span>
+                                            <span className={`project-value ${p.stage === 'Active' ? 'status-active' : 'status-diligence'}`}>{p.stage}</span>
+                                        </div>
+                                        <div className="project-row">
+                                            <span className="project-label">Carbon:</span>
+                                            <span className="project-value">{p.carbon} tCO2e/yr</span>
+                                        </div>
+                                        <div className="project-row">
+                                            <span className="project-label">Investment:</span>
+                                            <span className="project-value">${(p.investment/1000).toFixed(0)}K</span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {tab === 'dashboard' && (
+                        <div>
+                            <div className="stats-grid">
+                                <div className="stat-card">
+                                    <div className="stat-label">Active Projects</div>
+                                    <div className="stat-value">{stats.active}</div>
+                                </div>
+                                <div className="stat-card">
+                                    <div className="stat-label">Total Carbon Avoided</div>
+                                    <div className="stat-value">{stats.totalCarbon.toLocaleString()}</div>
+                                    <div className="stat-label">tCO2e/year</div>
+                                </div>
+                                <div className="stat-card">
+                                    <div className="stat-label">Total Investment</div>
+                                    <div className="stat-value">${stats.totalInvest}M</div>
+                                </div>
+                                <div className="stat-card">
+                                    <div className="stat-label">Avg Biodiversity</div>
+                                    <div className="stat-value">{stats.avgBio}/100</div>
+                                </div>
+                            </div>
+
+                            <div className="chart">
+                                <h3>Projects by Department</h3>
+                                {(() => {
+                                    const deptCounts = {};
+                                    filtered.forEach(p => { deptCounts[p.dept] = (deptCounts[p.dept] || 0) + 1; });
+                                    return (
+                                        <table style={{width: '100%'}}>
+                                            <thead><tr><th>Department</th><th>Project Count</th></tr></thead>
+                                            <tbody>
+                                                {Object.entries(deptCounts).map(([dept, count]) => (
+                                                    <tr key={dept}><td>{dept}</td><td>{count}</td></tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    );
+                                })()}
+                            </div>
+                        </div>
+                    )}
+
+                    {tab === 'tracking' && (
+                        <div>
+                            <h3 style={{marginBottom: '16px'}}>Active & Monitoring Projects</h3>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Project Name</th>
+                                        <th>Department</th>
+                                        <th>Carbon (tCO2e/yr)</th>
+                                        <th>Biodiversity</th>
+                                        <th>Investment</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {filtered.filter(p => p.stage === 'Active').map(p => (
+                                        <tr key={p.id}>
+                                            <td>{p.name}</td>
+                                            <td>{p.dept}</td>
+                                            <td>{p.carbon}</td>
+                                            <td>{p.biodiversity}/100</td>
+                                            <td>${(p.investment/1000).toFixed(0)}K</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+
+                    <div style={{textAlign: 'center', marginTop: '40px', padding: '20px', color: '#666', fontSize: '12px'}}>
+                        <p>✅ Prototype Status: Fully Functional | Tech: React + Fluent UI Design | Data: 100% Synthetic (Demo Only)</p>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+</body>
+</html>
