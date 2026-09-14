@@ -55,18 +55,12 @@
             color: #d84315;
         }
         
-        /* Filters Section */
         .filters {
             background: white;
             padding: 16px;
             border-radius: 4px;
             margin-bottom: 16px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            display: grid;
-            gap: 12px;
-        }
-        
-        .filter-grid {
             display: grid;
             gap: 12px;
         }
@@ -106,7 +100,6 @@
             box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.1);
         }
         
-        /* Stats Grid */
         .stats-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
@@ -137,7 +130,6 @@
             letter-spacing: 0.5px;
         }
         
-        /* Projects Grid */
         .project-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
@@ -204,7 +196,6 @@
             border-radius: 3px;
         }
         
-        /* Tables */
         table { 
             width: 100%; 
             border-collapse: collapse; 
@@ -259,7 +250,6 @@
             color: #dc2626;
         }
         
-        /* Tabs */
         .tab-buttons { 
             display: flex; 
             gap: 8px; 
@@ -327,79 +317,26 @@
             border-top: 1px solid #ddd;
         }
         
-        /* Mobile Responsive */
         @media (max-width: 768px) {
-            .container {
-                padding: 12px;
-            }
-            
-            .header h1 {
-                font-size: 20px;
-            }
-            
-            .header p,
-            .header {
-                font-size: 13px;
-                padding: 16px;
-            }
-            
-            .project-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .filter-row {
-                grid-template-columns: 1fr;
-            }
-            
-            .tab-buttons {
-                flex-direction: column;
-            }
-            
-            .tab-btn {
-                width: 100%;
-            }
-            
-            table {
-                font-size: 12px;
-            }
-            
-            th, td {
-                padding: 8px;
-            }
-            
-            .stat-value {
-                font-size: 24px;
-            }
-            
-            .stat-card {
-                padding: 12px;
-            }
+            .container { padding: 12px; }
+            .header h1 { font-size: 20px; }
+            .header p { font-size: 13px; padding: 16px; }
+            .project-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .filter-row { grid-template-columns: 1fr; }
+            .tab-buttons { flex-direction: column; }
+            .tab-btn { width: 100%; }
+            table { font-size: 12px; }
+            th, td { padding: 8px; }
+            .stat-value { font-size: 24px; }
         }
         
         @media (max-width: 480px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .header h1 {
-                font-size: 18px;
-            }
-            
-            table {
-                font-size: 11px;
-            }
-            
-            th, td {
-                padding: 6px;
-            }
-            
-            .stat-value {
-                font-size: 20px;
-            }
+            .stats-grid { grid-template-columns: 1fr; }
+            .header h1 { font-size: 18px; }
+            table { font-size: 11px; }
+            th, td { padding: 6px; }
+            .stat-value { font-size: 20px; }
         }
     </style>
 </head>
@@ -417,7 +354,7 @@
             { id: 'CO-META-001', name: 'Llanos Grassland Restoration', dept: 'Meta', type: 'Cattle', stage: 'Discovery', investment: 890000, carbon: 3200, biodiversity: 68, water: 65, livelihoods: 71 },
             { id: 'CO-META-002', name: 'Orinoco Tributary Reforestation', dept: 'Meta', type: 'Watershed', stage: 'Active', investment: 620000, carbon: 1650, biodiversity: 79, water: 74, livelihoods: 77 },
             { id: 'CO-BOL-001', name: 'Caribbean Mangrove Protection', dept: 'Bolívar', type: 'Mangrove', stage: 'Diligence', investment: 850000, carbon: 2650, biodiversity: 87, water: 83, livelihoods: 79 },
-            { id: 'CO-BOL-002', name: 'Cartagena Urban Forest', dept: 'Bolívar', type: 'Watershed', stage: 'Active', investment: 310000, carbon: 220, biodiversity: 61, water: 64, livelihoods: 68 },
+            { id: 'CO-BOL-002', name: 'Cartagena Urban Forest', dept: 'Bolívar', type: 'Watershed', stage: 'Active', investment: 310000, carbon: 220, biodiversity: 61, water: 64, livelihoods: 68 }
         ];
         
         const departments = ['Antioquia', 'Valle del Cauca', 'Cundinamarca', 'Meta', 'Bolívar'];
